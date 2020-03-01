@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="豆豆">
+
+
+    <meta name="subtitle" content="愿望是实现睡觉自由">
+
+
+    <meta name="description" content="你来啦，这里是豆豆的小笔记！">
+
+
+    <meta name="keywords" content="豆豆,学习,小笔记,睡觉自由">
+
+
+<title>「Hexo_01」使用Hexo搭建Blog | 豆豆的小笔记</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">豆豆的小笔记</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">豆豆的小笔记</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开所有</a>
+        <a onclick="go_top()">回到顶部</a>
+        <a onclick="go_bottom()">到达底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起所有"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开所有"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">「Hexo_01」使用Hexo搭建Blog</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        时间： <a href="#">二月 26, 2020&nbsp;&nbsp;19:19:58</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类：
+                            
+                                <a href="/categories/Hexo/">Hexo</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h1><ol>
+<li>Node.js是一个基于Chrome V8引擎的<strong>JavaScript运行环境</strong>。需要进入<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">Node.js官网</a>下载安装。</li>
+<li><strong>测试安装成功</strong>需要在<code>cmd</code>中输入<code>node -v</code>，输出Node.js的版本号即为安装成功。</li>
+</ol>
+<h1 id="注册代码托管平台"><a href="#注册代码托管平台" class="headerlink" title="注册代码托管平台"></a>注册代码托管平台</h1><blockquote>
+<p>为了后期部署方便，这里建议使用<strong>同一个</strong>邮箱来注册不同平台。</p>
+</blockquote>
+<h2 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h2><ol>
+<li>登录<a href="https://github.com/" target="_blank" rel="noopener">GitHub网站</a>注册GitHub账号。</li>
+<li>点击<strong>New repository</strong>按钮新建仓库，仓库命名要和GitHub的用户名<strong>保持一致</strong>，例如我的GitHub的用户名为<strong>HengistYoo</strong>，我这里的仓库名就叫做<strong>HengistYoo.github.io</strong>。仓库的其他参数保持默认即可。</li>
+</ol>
+<h2 id="Gitee"><a href="#Gitee" class="headerlink" title="Gitee"></a>Gitee</h2><ol>
+<li>登录<a href="https://gitee.com/" target="_blank" rel="noopener">码云网站</a>注册账号。</li>
+<li>点击<strong>新建仓库</strong>按钮新建仓库，仓库命名要和Gitee的用户名<strong>保持一致</strong>，例如我的Gitee的用户名为<strong>HengistYoo</strong>，我这里的仓库名就叫做<strong>HengistYoo</strong>，注意这里的命名<strong>和GitHub不同</strong>。仓库的其他参数保持默认即可。</li>
+</ol>
+<h1 id="安装Git-for-Windows"><a href="#安装Git-for-Windows" class="headerlink" title="安装Git for Windows"></a>安装Git for Windows</h1><blockquote>
+<p>由于我使用的是Windows 10平台部署的，所以这里以Git for Windows为例。</p>
+</blockquote>
+<ol>
+<li><p>Git是一个管理项目的工具，这里用来向代码托管平台上传更新的代码。需要进入<a href="https://gitforwindows.org/" target="_blank" rel="noopener">Git for Windows官网</a>下载安装。这里需要注意，<strong>不是</strong>下载GitHub桌面版。</p>
+</li>
+<li><p><strong>测试安装成功</strong>需要在<code>cmd</code>中输入<code>git --version</code>，输出Git的版本号即为安装成功。</p>
+</li>
+</ol>
+<h1 id="托管平台SSH配置"><a href="#托管平台SSH配置" class="headerlink" title="托管平台SSH配置"></a>托管平台SSH配置</h1><blockquote>
+<p>上传代码可以通过远程SSH链接，其中使用SSH Keys来进行远程登录安全验证。</p>
+</blockquote>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Hexo/"># Hexo</a>
+                    
+                        <a href="/tags/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"># 搭建博客</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/02/26/markdown-01/">「Markdown_01」基本语法</a>
+            
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 豆豆 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

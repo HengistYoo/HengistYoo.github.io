@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="豆豆">
+
+
+    <meta name="subtitle" content="愿望是实现睡觉自由">
+
+
+    <meta name="description" content="你来啦，这里是豆豆的小笔记！">
+
+
+    <meta name="keywords" content="豆豆,学习,小笔记,睡觉自由">
+
+
+<title>「线性代数_01」矩阵及其应用 | 豆豆的小笔记</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">豆豆的小笔记</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">豆豆的小笔记</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开所有</a>
+        <a onclick="go_top()">回到顶部</a>
+        <a onclick="go_bottom()">到达底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起所有"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开所有"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">「线性代数_01」矩阵及其应用</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        时间： <a href="#">二月 28, 2020&nbsp;&nbsp;14:19:29</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类：
+                            
+                                <a href="/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">线性代数</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="矩阵的概念"><a href="#矩阵的概念" class="headerlink" title="矩阵的概念"></a>矩阵的概念</h1><h2 id="矩阵的概念-1"><a href="#矩阵的概念-1" class="headerlink" title="矩阵的概念"></a>矩阵的概念</h2><blockquote>
+<p><strong>定义：</strong></p>
+<p>由$ m \times n $个数$ a_{ij} ( i=1,2,…,m;j=1,2,…,n ) $排成一个$ m $行$ n $列的矩形数表<br>$$<br>\begin{pmatrix}<br>a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} \\<br>a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} \\<br>\vdots &amp; \vdots &amp; &amp; \vdots \\<br>a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn}<br>\end{pmatrix}<br>$$</p>
+<p>或</p>
+<p>$$<br>\begin{bmatrix}<br>a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} \\<br>a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} \\<br>\vdots &amp; \vdots &amp; &amp; \vdots \\<br>a_{m1} &amp; a_{m2} &amp; \dots &amp; a_{mn}<br>\end{bmatrix}<br>$$</p>
+<p>称为$ m \times n $矩阵或$ m $行$ n $列矩阵，简称<strong>矩阵</strong>.横排称为矩阵的<strong>行</strong>，纵排称为矩阵的<strong>列</strong>，$ a_{ij} ( i=1,2,…,m;j=1,2,…,n ) $称为矩阵的第$ i $行第$ j $列<strong>元</strong>或$ (i,j) $<strong>元</strong>.$ m \times n $矩阵通常用大写字母如$ \pmb{A},\pmb{B},… $表示，有时也记作$ \pmb{A} = ( a_{ij} )_{m \times n} $.</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>注意</strong>：</p>
+<ul>
+<li><strong>实矩阵</strong>：元都是实数的矩阵.</li>
+<li><strong>复矩阵</strong>：元都是复数的矩阵.</li>
+<li><strong>零矩阵</strong>：元都是$ 0 $的矩阵，记为$ \pmb{O} $.</li>
+<li><strong>列矩阵</strong>：只有一列的矩阵，也称为列向量.</li>
+</ul>
+<p>$$<br>\pmb{A} =<br>\begin{pmatrix}<br>a_1 \\<br>a_2 \\<br>\vdots \\<br>a_m<br>\end{pmatrix}<br>$$</p>
+<ul>
+<li><strong>行矩阵</strong>：只有一行的矩阵，也称为行向量.</li>
+</ul>
+<p>$$<br>\pmb{B} =<br>\begin{pmatrix}<br>b_1 &amp; b_2 &amp; \dots &amp;    b_n<br>\end{pmatrix}<br>$$</p>
+<ul>
+<li><p>行向量和列向量也可以用小写字母$ \pmb{a}, \pmb{b},…; \pmb{\alpha} , \pmb{\beta} , … $表示.</p>
+</li>
+<li><p>若$ m=n $，即矩阵的行数与列数相同时，称矩阵为<strong>$ n $阶矩阵</strong>或<strong>$ n $阶方阵</strong>.在$ n $阶矩阵<strong>$ A $</strong>中，从左上角到右下角的对角线称为$ \pmb{A} $的<strong>主对角线</strong>，主对角线上的元$ a_{ii} $称为$ n $阶矩阵$ \pmb{A} $的主对角线元；从右上角到左下角的对角线称为$ \pmb{A} $的<strong>次对角线</strong>.</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="几种特殊矩阵"><a href="#几种特殊矩阵" class="headerlink" title="几种特殊矩阵"></a>几种特殊矩阵</h2><ul>
+<li><p><strong>上三角（形）矩阵</strong>：主对角线以下的元全为$ 0 $的$ n $阶方阵.<br>$$<br>\pmb{A} =<br>\begin{pmatrix}<br>a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} \\<br>0 &amp; a_{22} &amp; \dots &amp; a_{2n} \\<br>\vdots &amp; \vdots &amp; &amp; \vdots \\<br>0 &amp; 0 &amp; \dots &amp; a_{nn}<br>\end{pmatrix}<br>$$</p>
+</li>
+<li><p><strong>下三角（形）矩阵</strong>：主对角线以上的元全为$ 0 $的$ n $阶方阵.</p>
+</li>
+</ul>
+<p>$$<br>\pmb{B} =<br>\begin{pmatrix}<br>b_{11} &amp; 0 &amp; \dots &amp; 0 \\<br>b_{21} &amp; b_{22} &amp; \dots &amp; 0 \\<br>\vdots &amp; \vdots &amp; &amp; \vdots \\<br>b_{n1} &amp; b_{n2} &amp; \dots &amp; b_{nn}<br>\end{pmatrix}<br>$$</p>
+<ul>
+<li><p><strong>三角形矩阵</strong>：上三角形矩阵和下三角形矩阵统称为三角形矩阵.</p>
+</li>
+<li><p><strong>对角矩阵（diagonal matrix）</strong>：如果$ n $阶方阵的主对角线以外的元全为$ 0 $，则称为对角矩阵，记作$ \pmb{\Lambda} $或$ diag(a_{11} , a_{22} , \dots , a_{nn}) $.<br>$$<br>\pmb{\Lambda} =<br>\begin{pmatrix}<br>a_{11} &amp; &amp; &amp; \\<br>&amp; a_{22} &amp; &amp; \\<br>&amp;  &amp; \ddots &amp; \\<br>&amp;  &amp;  &amp; a_{nn}<br>\end{pmatrix}<br>$$</p>
+</li>
+</ul>
+<blockquote>
+<p>对角矩阵对角线上可以有零元.</p>
+</blockquote>
+<ul>
+<li><p><strong>单位矩阵</strong>：主对角线上的元全为$ 1 $的$ n $阶对角矩阵称为$ n $阶单位矩阵，记作$ E_n $，$ I_n $或$ E $，$ I $.<br>$$<br>E = I =<br>\begin{pmatrix}<br>1 &amp; &amp; &amp; \\<br>&amp; 1 &amp; &amp; \\<br>&amp;  &amp; \ddots &amp; \\<br>&amp;  &amp;  &amp; 1<br>\end{pmatrix}<br>$$</p>
+</li>
+<li><p><strong>同型矩阵</strong>：两个行数与列数相等的矩阵.</p>
+</li>
+<li><p><strong>相等矩阵</strong>：设 </p>
+</li>
+</ul>
+<p>$$ \pmb{A}=(a_{ij})_{mxn} $$</p>
+<p>与</p>
+<p>$$ \pmb{B}= (a_{ij})_{mxn} $$</p>
+<p>是同型矩阵且对应元相等，则称$ \pmb{A} $与$ \pmb{B} $相等，记作$ \pmb{A} = \pmb{B} $.即</p>
+<p>$$<br>\pmb{A} = \pmb{B} \Leftrightarrow a_{ij} = b_{ij},i=1,2,…,m;j=1,2,…,n.<br>$$</p>
+<ul>
+<li><strong>系数矩阵</strong>：在实际问题中，常常会遇到一些变量要用另外一些变量线性表示.设一组变量$ y_1 , y_2 ,…, y_m $用另一组变量$ x_1 , x_2 ,…, x_n $表示为<br>$$<br>\left \lbrace<br>\begin{aligned}<br>y_1 &amp; = a_{11}x_1+a_{12}x_2+…+a_{1n}x_n \\<br>y_2 &amp; = a_{21}x_1+a_{22}x_2+…+a_{2n}x_n \\<br>&amp; \dots \dots \dots \dots \\<br>y_m &amp; = a_{m1}x_1+a_{m2}x_2+…+a_{mn}x_n<br>\end{aligned}<br>\right.<br>$$</li>
+</ul>
+<p>称此关系式为从变量$ x_1 , x_2 ,…, x_n $到变量$ y_1 , y_2 ,…, y_m $的线性变换.</p>
+<p>这个线性变换中的系数组成的矩阵$ {A} $称为此线性变换的系数矩阵.</p>
+<p>$$<br>\pmb{A} =<br>\begin{pmatrix}<br>a_{11} &amp; a_{12} &amp; \dots &amp; a_{1n} \\<br>a_{21} &amp; a_{22} &amp; \dots &amp; a_{2n} \\<br>\vdots &amp; \vdots &amp; &amp; \vdots \\<br>a_{m1} &amp; a_{m1} &amp; \dots &amp; a_{mn}<br>\end{pmatrix}<br>$$</p>
+<h1 id="矩阵的运算"><a href="#矩阵的运算" class="headerlink" title="矩阵的运算"></a>矩阵的运算</h1><h2 id="矩阵的加法与数乘"><a href="#矩阵的加法与数乘" class="headerlink" title="矩阵的加法与数乘"></a>矩阵的加法与数乘</h2><blockquote>
+<p><strong>定义</strong>：</p>
+<p>设有两个同型的$ m\times n $矩阵$ \pmb{A}=(a_{ij}),\pmb{B}=(b_{ij}) $. 矩阵$ \pmb{A} $与$ \pmb{B} $的和记作$ \pmb{A}+\pmb{B} $，规定为</p>
+<p>$$<br>\pmb{A}+\pmb{B} =<br>\begin{pmatrix}<br>a_{11}+b_{11} &amp; a_{12}+b_{12} &amp; \dots &amp; a_{1n}+b_{1n} \\<br>a_{21}+b_{21} &amp; a_{22}+b_{22} &amp; \dots &amp; a_{2n}+b_{2n} \\<br>\vdots &amp; \vdots &amp; &amp; \vdots \\<br>a_{m1}+b_{m1} &amp; a_{m1}+b_{m1} &amp; \dots &amp; a_{mn}+b_{mn}<br>\end{pmatrix}<br>$$</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>定义</strong>：</p>
+<p>数$ k $与矩阵$ \pmb{A} $的乘积，简称数乘，记作$ k\pmb{A} $或$ \pmb{A}k $,规定为</p>
+<p>$$<br>k\pmb{A} = \pmb{A}k =<br>\begin{pmatrix}<br>ka_{11} &amp; ka_{12} &amp; \dots &amp; ka_{1n} \\<br>ka_{21} &amp; ka_{22} &amp; \dots &amp; ka_{2n} \\<br>\vdots &amp; \vdots &amp; &amp; \vdots \\<br>ka_{m1} &amp; ka_{m1} &amp; \dots &amp; ka_{mn}<br>\end{pmatrix}<br>$$</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>矩阵的加法与数乘统称为<strong>矩阵的线性运算</strong>.</li>
+<li><strong>负矩阵</strong>：对于矩阵$ \pmb{A}= (a_{ij}) $, 称矩阵$ (-a_{ij}) $为$ \pmb{A} $的负矩阵，记作$ -\pmb{A} $.</li>
+<li><strong>矩阵的减法</strong>：由负矩阵可以定义矩阵$ {A} $与$ {B} $的减法为$ \pmb{A}-\pmb{B} = \pmb{A}+(-\pmb{B}) $，即两个同型矩阵相减，归结为它们的对应元相减.</li>
+<li>$ \pmb{A} = \pmb{B} \Leftrightarrow \pmb{A}-\pmb{B}=\pmb{O} $.</li>
+</ul>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>性质</strong>：</p>
+<p>矩阵的线性运算满足下列运算规律（设$ \pmb{A} , \pmb{B} , \pmb{C} $都是$ m\times n $矩阵，$ k $ 与$ l $ 为数）：</p>
+<ol>
+<li>$ \pmb{A}+\pmb{B}=\pmb{B}+\pmb{A} $.</li>
+<li>$ (\pmb{A}+\pmb{B})+\pmb{C} = \pmb{A}+(\pmb{B}+\pmb{C}) $.</li>
+<li>$ \pmb{A}+\pmb{O}=\pmb{A} $.</li>
+<li>$ \pmb{A}+(-\pmb{A})=\pmb{O} $.</li>
+<li>$ 1 \cdot \pmb{A} = \pmb{A} $.</li>
+<li>$ (kl)\pmb{A}=k(l\pmb{A}) $.</li>
+<li>$ (k+l)\pmb{A}=k\pmb{A}+l\pmb{A} $.</li>
+<li>$ k(\pmb{A}+\pmb{B})=k\pmb{A}+k\pmb{B} $.</li>
+</ol>
+</blockquote>
+<h2 id="矩阵的乘法"><a href="#矩阵的乘法" class="headerlink" title="矩阵的乘法"></a>矩阵的乘法</h2><blockquote>
+<p><strong>定义</strong>：</p>
+<p>设$ \pmb{A}=(a_{ij}) $是一个$ m\times s $矩阵，$ \pmb{B}=(b_{ij}) $是一个$ s\times n $矩阵，规定矩阵 $ \pmb{A} $与矩阵$ \pmb{B} $的乘积是$ m\times n $矩阵$ \pmb{C}=(c_{ij}) $，记为$ \pmb{C}=\pmb{AB} $,其中</p>
+<p>$$<br>c_{ij} = a_{i1}b_{1j}+a_{i2}b_{2j}+…+a_{is}b_{sj}=\sum_{k=1}^{s}. (i=1,2,…,m;j=1,2,…,n)<br>$$</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>矩阵乘法不满足交换律，即在一般条件下，$ \pmb{AB} \neq \pmb{BA} $.        </li>
+<li>两个非零矩阵之积可能是零矩阵.</li>
+<li>若$ \pmb{A}\neq\pmb{O} $，$\pmb{AB}=\pmb{AC} $不能推出$ \pmb{B}=\pmb{C} $.</li>
+</ul>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>性质</strong>：</p>
+<p>矩阵的乘法满足下面的运算规律：</p>
+<ul>
+<li>$ (\pmb{AB})\pmb{C}=\pmb{A}(\pmb{BC}) $.</li>
+<li>$ \pmb{A}(\pmb{B}+\pmb{C})=\pmb{AB}+\pmb{AC} , (\pmb{B}+\pmb{C})\pmb{A}=\pmb{BA}+\pmb{CA} $.</li>
+<li>$ \lambda(\pmb{AB})=(\lambda\pmb{A})\pmb{B}=\pmb{A}(\lambda\pmb{B}) $，其中$ \lambda $是数.</li>
+<li>$  E_mA_{m\times n} = A_{m\times n}E_n = A_{m\times n} $.</li>
+</ul>
+</blockquote>
+<h2 id="方阵的幂与多项式"><a href="#方阵的幂与多项式" class="headerlink" title="方阵的幂与多项式"></a>方阵的幂与多项式</h2><p>设$ \pmb{A} $为$ n $阶方阵，$ k $为正整数，$ k $个$ \pmb{A} $的连乘积称为$ \pmb{A} $的$ k $次幂，记作$ \pmb{A}^k $.即</p>
+<p>$$<br>\pmb{A}^k=\overbrace{\pmb{A}\pmb{A} … \pmb{A}}^{k}<br>$$</p>
+<blockquote>
+<p><strong>注意</strong>：$ \pmb{A}^0 = \pmb{E} $.</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>性质</strong>：</p>
+<p>方阵的幂满足下面运算规律（$ \pmb{A} $为方阵，$ k,l $为非负整数）：</p>
+<ul>
+<li>$ \pmb{A}^k\pmb{A}^l=\pmb{A}^{k+l} $.</li>
+<li>$ (\pmb{A}^k)^l=\pmb{A}^{kl} $.</li>
+</ul>
+</blockquote>
+<hr>
+<blockquote>
+<p><strong>注意</strong>：由于矩阵乘法不满足交换律，一般地，$ (\pmb{AB})^k\neq \pmb{A}^k\pmb{B}^k $.</p>
+</blockquote>
+<h2 id="矩阵的转置"><a href="#矩阵的转置" class="headerlink" title="矩阵的转置"></a>矩阵的转置</h2><h2 id="共轭矩阵"><a href="#共轭矩阵" class="headerlink" title="共轭矩阵"></a>共轭矩阵</h2><h2 id="可逆矩阵"><a href="#可逆矩阵" class="headerlink" title="可逆矩阵"></a>可逆矩阵</h2><h1 id="分块矩阵"><a href="#分块矩阵" class="headerlink" title="分块矩阵"></a>分块矩阵</h1><h1 id="矩阵的初等变换"><a href="#矩阵的初等变换" class="headerlink" title="矩阵的初等变换"></a>矩阵的初等变换</h1><h2 id="高斯消元法"><a href="#高斯消元法" class="headerlink" title="高斯消元法"></a>高斯消元法</h2><h2 id="初等变换"><a href="#初等变换" class="headerlink" title="初等变换"></a>初等变换</h2><h1 id="初等矩阵"><a href="#初等矩阵" class="headerlink" title="初等矩阵"></a>初等矩阵</h1>
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/"># 线性代数</a>
+                    
+                        <a href="/tags/%E6%95%B0%E5%AD%A6/"># 数学</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/02/28/markdown-03/">「Markdown_03」使用Flowchart绘图</a>
+            
+            
+            <a class="next" rel="next" href="/2020/02/28/python1-10/">「Python_10」第一部分：还没想好题目</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 豆豆 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

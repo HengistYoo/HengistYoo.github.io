@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="豆豆">
+
+
+    <meta name="subtitle" content="愿望是实现睡觉自由">
+
+
+    <meta name="description" content="你来啦，这里是豆豆的小笔记！">
+
+
+    <meta name="keywords" content="豆豆,学习,小笔记,睡觉自由">
+
+
+<title>「Markdown_01」基本语法 | 豆豆的小笔记</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">豆豆的小笔记</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">豆豆的小笔记</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开所有</a>
+        <a onclick="go_top()">回到顶部</a>
+        <a onclick="go_bottom()">到达底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起所有"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开所有"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">「Markdown_01」基本语法</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        时间： <a href="#">二月 26, 2020&nbsp;&nbsp;19:34:16</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类：
+                            
+                                <a href="/categories/Markdown/">Markdown</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="设置标题"><a href="#设置标题" class="headerlink" title="设置标题"></a>设置标题</h1><h2 id="通用标题设置"><a href="#通用标题设置" class="headerlink" title="通用标题设置"></a>通用标题设置</h2><p>使用<code>#</code>符号来设置<strong>不同级别</strong>的标题。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 一级标题</span></span><br><span class="line"><span class="section">## 二级标题</span></span><br><span class="line"><span class="section">### 三级标题</span></span><br><span class="line"><span class="section">#### 四级标题</span></span><br><span class="line"><span class="section">##### 五级标题</span></span><br><span class="line"><span class="section">###### 六级标题</span></span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><h4 id="四级标题"><a href="#四级标题" class="headerlink" title="四级标题"></a>四级标题</h4><h5 id="五级标题"><a href="#五级标题" class="headerlink" title="五级标题"></a>五级标题</h5><h6 id="六级标题"><a href="#六级标题" class="headerlink" title="六级标题"></a>六级标题</h6></blockquote>
+<h2 id="前两级标题设置"><a href="#前两级标题设置" class="headerlink" title="前两级标题设置"></a>前两级标题设置</h2><p><strong>一级标题</strong>使用<code>=</code>来设置，<strong>二级标题</strong>使用<code>-</code>来设置。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">一级标题</span><br><span class="line">===</span><br><span class="line"></span><br><span class="line">二级标题</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<h1 id="一级标题-1"><a href="#一级标题-1" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题-1"><a href="#二级标题-1" class="headerlink" title="二级标题"></a>二级标题</h2></blockquote>
+<p>&nbsp;</p>
+<h1 id="自然段换行"><a href="#自然段换行" class="headerlink" title="自然段换行"></a>自然段换行</h1><h2 id="新的自然段"><a href="#新的自然段" class="headerlink" title="新的自然段"></a>新的自然段</h2><p>只需要在两个自然段之间<strong>空一行</strong>。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第一段</span><br><span class="line"></span><br><span class="line">第二段</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>第一段</p>
+<p>第二段</p>
+</blockquote>
+<h2 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h2><p>在<strong>行末</strong>加<strong>两个空格</strong>。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第一行  </span><br><span class="line">第二行</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>第一行<br>第二行</p>
+</blockquote>
+<p>&nbsp;</p>
+<h1 id="引用表现"><a href="#引用表现" class="headerlink" title="引用表现"></a>引用表现</h1><p>在<strong>行首</strong>加<code>&gt;</code>即可添加引用格式。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="quote">&gt; 引用这段话</span></span><br><span class="line">&gt;&gt;&gt; 多重引用这段话</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>引用这段话</p>
+<blockquote>
+<blockquote>
+<p>多重引用这段话</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>&nbsp;</p>
+<h1 id="增加分割线"><a href="#增加分割线" class="headerlink" title="增加分割线"></a>增加分割线</h1><p>使用<code>---</code>、<code>***</code>、<code>___</code>、<code>- - -</code>都可以为文章增加分割线，其中<code>---</code><strong>与二级标题的区别</strong>在于，二级标题的<code>---</code>上一行是文字，而分割线的上一行是空行。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"></span><br><span class="line"><span class="emphasis">***</span></span><br><span class="line"></span><br><span class="line"><span class="emphasis">___</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">- </span>- -</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<hr>
+<hr>
+<hr>
+<hr>
+</blockquote>
+<p>&nbsp;</p>
+<h1 id="强调表现"><a href="#强调表现" class="headerlink" title="强调表现"></a>强调表现</h1><p>将<strong>单个</strong><code>*</code> 或<code>_</code>加在文字两侧，就是<strong>斜体</strong>；将<strong>连续两个</strong><code>*</code> 或<code>_</code>加在文字两侧，就是<strong>粗体</strong>。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="emphasis">*斜体*</span> <span class="emphasis">_斜体_</span></span><br><span class="line"><span class="strong">**粗体**</span> <span class="strong">__粗体__</span></span><br><span class="line"><span class="strong">***粗斜体**</span>* <span class="strong">___粗斜体__</span>_</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p><em>斜体</em> <em>斜体</em><br><strong>粗体</strong> <strong>粗体</strong><br><strong><em>粗斜体</em></strong> <strong><em>粗斜体</em></strong></p>
+</blockquote>
+<p>&nbsp;</p>
+<h1 id="列表表现"><a href="#列表表现" class="headerlink" title="列表表现"></a>列表表现</h1><h2 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h2><p>将<code>-</code>、<code>*</code>、<code>+</code>符号置于行首，用<strong>两个空格分等级</strong>。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">- </span>无序列表</span><br><span class="line"><span class="bullet">  - </span>无序列表</span><br><span class="line"><span class="bullet">    - </span>无序列表</span><br><span class="line"><span class="bullet">* </span>无序列表</span><br><span class="line"><span class="bullet">+ </span>无序列表</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<ul>
+<li>无序列表<ul>
+<li>无序列表<ul>
+<li>无序列表</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>无序列表</li>
+</ul>
+<ul>
+<li>无序列表</li>
+</ul>
+</blockquote>
+<h2 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h2><p>用<strong>后面带<code>.</code>的数字</strong>置于行首，用两个空格分级。有序列表会<strong>从第一个条目前面的数字开始排序</strong>，为了便于插入新的条目，建议第一个条目用<code>1</code>，其他条目用<code>0</code>。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1. </span>有序列表</span><br><span class="line"><span class="bullet">0. </span>有序列表</span><br><span class="line"><span class="bullet">  1. </span>有序列表</span><br><span class="line"><span class="bullet">  0. </span>有序列表</span><br><span class="line"><span class="bullet">  0. </span>有序列表</span><br><span class="line"><span class="bullet">0. </span>有序列表</span><br><span class="line"><span class="bullet">0. </span>有序列表</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<ol>
+<li>有序列表</li>
+<li>有序列表<ol>
+<li>有序列表</li>
+<li>有序列表</li>
+<li>有序列表</li>
+</ol>
+</li>
+<li>有序列表</li>
+<li>有序列表</li>
+</ol>
+</blockquote>
+<p>&nbsp;</p>
+<h1 id="超文本链接"><a href="#超文本链接" class="headerlink" title="超文本链接"></a>超文本链接</h1><p>超文本链接有以下四种写法，<strong>前两种写法</strong>会将链接直接显示出来，<strong>第三种写法</strong>可以显示指定的文字，<strong>第四种写法</strong>可以增加一个鼠标悬停的标题。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">https://hengistyoo.github.io/</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">https:</span>//<span class="attr">hengistyoo.github.io</span>/&gt;</span></span></span><br><span class="line">[<span class="string">豆豆的小笔记</span>](<span class="link">https://hengistyoo.github.io/</span>)</span><br><span class="line">[<span class="string">豆豆的小笔记</span>](<span class="link">https://hengistyoo.github.io/ "你好呀，我是豆豆！"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p><a href="https://hengistyoo.github.io/">https://hengistyoo.github.io/</a><br><a href="https://hengistyoo.github.io/">https://hengistyoo.github.io/</a><br><a href="https://hengistyoo.github.io/">豆豆的小笔记</a><br><a href="https://hengistyoo.github.io/" title="你好呀，我是豆豆！">豆豆的小笔记</a></p>
+</blockquote>
+<p>&nbsp;</p>
+<h1 id="代码高亮"><a href="#代码高亮" class="headerlink" title="代码高亮"></a>代码高亮</h1><h2 id="行内代码"><a href="#行内代码" class="headerlink" title="行内代码"></a>行内代码</h2><p>用反单引号<code>`</code>符号来引用，如果要引用反单引号，则可以使用<strong>一对两个反单引号</strong>。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">您可以使用<span class="code">`add(x,y)`</span>函数计算两个数的和。</span><br><span class="line">反单引号是<span class="code">```</span>`` 。</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p>您可以使用<code>add(x,y)</code>函数计算两个数的和。<br>反单引号是<code>`</code>。</p>
+</blockquote>
+<h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2><p>用<strong>连续三个</strong><code>`</code>或<code>~</code>来显示代码块，可以在第一行末尾注明代码的语言名。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">​<span class="code">```</span>c++</span><br><span class="line">int main()&#123;</span><br><span class="line"><span class="code">    return 0;</span></span><br><span class="line">&#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">效果如下：</span><br><span class="line"></span><br><span class="line">&gt; &#96;&#96;&#96;c++</span><br><span class="line">&gt; int main()&#123;</span><br><span class="line">&gt;     return 0;</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>&nbsp;</p>
+<h1 id="图片显示"><a href="#图片显示" class="headerlink" title="图片显示"></a>图片显示</h1><h2 id="无链接图片"><a href="#无链接图片" class="headerlink" title="无链接图片"></a>无链接图片</h2><p>使用<code>![]()</code>来显示图片，方括号中填写的是<strong>alt文字</strong>，即在找不到图片或图片加载出来之前显示的文字；圆括号中填写的是<strong>图片url</strong>和<strong>图片title</strong>。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">Doge</span>](<span class="link">dog.jpeg "狗子"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p><img src="dog.jpeg" alt="Doge" title="狗子"></p>
+</blockquote>
+<h2 id="带链接图片"><a href="#带链接图片" class="headerlink" title="带链接图片"></a>带链接图片</h2><p>将<strong>超链接的语法套在图片的语法上</strong>，即<code>[![]()]()</code>。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">![Doge</span>](<span class="link">dog.jpeg "狗子"</span>)](<span class="link">https://hengistyoo.github.io/ "你好呀，我是豆豆！"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<blockquote>
+<p><a href="https://hengistyoo.github.io/" title="你好呀，我是豆豆！"><img src="dog.jpeg" alt="Doge" title="狗子"></a></p>
+</blockquote>
+<p>&nbsp;</p>
+<h1 id="表格显示"><a href="#表格显示" class="headerlink" title="表格显示"></a>表格显示</h1><h2 id="表格制作"><a href="#表格制作" class="headerlink" title="表格制作"></a>表格制作</h2><p>使用<code>-</code>和<code>|</code>来制作表格。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| TH1  | TH2  | TH3  |</span><br><span class="line">| ---- | ---- | ---- |</span><br><span class="line">| TD1  | TD2  | TD3  |</span><br><span class="line">| TD4  | TD5  | TD6  |</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<table>
+<thead>
+<tr>
+<th>TH1</th>
+<th>TH2</th>
+<th>TH3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TD1</td>
+<td>TD2</td>
+<td>TD3</td>
+</tr>
+<tr>
+<td>TD4</td>
+<td>TD5</td>
+<td>TD6</td>
+</tr>
+</tbody></table>
+<h2 id="表格对齐"><a href="#表格对齐" class="headerlink" title="表格对齐"></a>表格对齐</h2><p>使用<code>:</code>来实现表格对齐。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">| TH1  | TH2  | TH3  |</span><br><span class="line">| :--- | :---: | ---: |</span><br><span class="line">| TD1  | TD2  | TD3  |</span><br><span class="line">| TD4  | TD5  | TD6  |</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">TH1</th>
+<th align="center">TH2</th>
+<th align="right">TH3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">TD1</td>
+<td align="center">TD2</td>
+<td align="right">TD3</td>
+</tr>
+<tr>
+<td align="left">TD4</td>
+<td align="center">TD5</td>
+<td align="right">TD6</td>
+</tr>
+</tbody></table>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Markdown/"># Markdown</a>
+                    
+                        <a href="/tags/%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/"># 基本语法</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/02/28/python1-01/">「Python_01」第一部分：数据类型</a>
+            
+            
+            <a class="next" rel="next" href="/2020/02/26/hexo-01/">「Hexo_01」使用Hexo搭建Blog</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 豆豆 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
