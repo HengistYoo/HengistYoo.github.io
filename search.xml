@@ -1,6 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>「AI_01」回归：案例学习</title>
+    <url>/2020/03/02/ai-lhyML-01/</url>
+    <content><![CDATA[<h1 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h1><ul>
+<li>股票预测系统：利用以往的数据来判断未来的股票.</li>
+<li>无人驾驶：利用一些传感器数据来判断方向盘角度.</li>
+<li>推荐系统：输入使用者A和商品B，输出使用者购买可能性.</li>
+</ul>
+<h1 id="应用示例"><a href="#应用示例" class="headerlink" title="应用示例"></a>应用示例</h1><p>评估宝可梦的<strong>CP值（战斗力）</strong>，从而判断是否进化宝可梦.</p>
+<p>输入是某只宝可梦：</p>
+<ul>
+<li>$x$代表宝可梦.</li>
+<li>$x_{cp}$代表宝可梦的<strong>CP值</strong>.</li>
+<li>$x_s$代表宝可梦的<strong>物种</strong>.</li>
+<li>$x_{hp}$代表宝可梦的<strong>生命值</strong>.</li>
+<li>$x_w$代表宝可梦的<strong>重量</strong>.</li>
+<li>$x_h$代表宝可梦的<strong>高度</strong>.</li>
+<li>$y$代表<strong>进化后的CP值</strong>.</li>
+</ul>
+<h2 id="第一步：模型"><a href="#第一步：模型" class="headerlink" title="第一步：模型"></a>第一步：模型</h2><p>例如选择：<br>$$<br>y = b + w \cdot x_{cp}<br>$$</p>
+<blockquote>
+<p>线性模型：<br>$$<br>y = b + \sum w_i x_i<br>$$<br>其中：</p>
+<ul>
+<li>$x_i$是输入的不同属性，称为<strong>特征</strong>.</li>
+<li>$w_i$是每个特征对应的<strong>权重</strong>.</li>
+<li>$b$称为<strong>偏置</strong>.</li>
+</ul>
+</blockquote>
+<h2 id="第二步：模型性能"><a href="#第二步：模型性能" class="headerlink" title="第二步：模型性能"></a>第二步：模型性能</h2><p>接下来要收集<strong>训练数据</strong>才能找到模型的函数.</p>
+<p>我们收集的是模型的输入和输出，因为是一个回归的模型，所以<strong>输出是一个数值</strong>.</p>
+<p>举例来说（用<strong>上标</strong>表示<strong>完整的对象的编号</strong>，用<strong>下标</strong>表示对象的<strong>成分</strong>）：</p>
+<ul>
+<li>杰尼龟$x^1$进化到卡咪龟$\hat{y}^1=979$.</li>
+<li>伊布$x^2$进化到雷精灵$\hat{y}^2=1420$.</li>
+</ul>
+<p>由此，收集了10只宝可梦的数据：<br>$$<br>(x^1,\hat{y}^1), (x^2,\hat{y}^2), \dots ,(x^{10},\hat{y}^{10})<br>$$<br>可以绘制出来一张$x_{cp}-\hat{y}$的散点图。</p>
+<blockquote>
+<p>接下来要判断不同函数的好坏，这里需要定义一个新的函数<strong>损失函数$L$</strong>，这是一个函数的函数：</p>
+<ul>
+<li>输入：一个函数.</li>
+<li>输出：这个函数有<strong>多不好</strong>.</li>
+</ul>
+<p>$$<br>L(f) = L(w,b)<br>$$</p>
+<p>因为$f$是由$w, b$决定的，所以我们可以说损失函数是用来衡量一组参数的好坏.</p>
+<p>实际上可以选择不同的损失函数的形式，这里就将数据带入到$y = b + w \cdot x_{cp}$中，然后计算差的平方和，即：<br>$$<br>L(f) = L(w,b) = \sum_{n=1}^{10} (\hat{y}^n - (b + w \cdot x_{cp}^n))^2<br>$$</p>
+</blockquote>
+<h2 id="第三步：最优方程"><a href="#第三步：最优方程" class="headerlink" title="第三步：最优方程"></a>第三步：最优方程</h2><blockquote>
+<p>根据损失函数来挑选最好的方程<br>$$<br>f^* = \arg \min_f L(f)<br>$$<br>或<br>$$<br>\begin{align}<br>w^* , b^* &amp; = \arg \min_{w,b} L(w, b) \\<br>&amp; = \arg \min_{w,b} \sum_{n=1}^{10} (\hat{y}^n - (b + w \cdot x_{cp}^n))^2<br>\end{align}<br>$$<br>从中选择能够使得损失函数最好的$w,b$参数.</p>
+</blockquote>
+<h2 id="第三步：梯度下降法"><a href="#第三步：梯度下降法" class="headerlink" title="第三步：梯度下降法"></a>第三步：梯度下降法</h2><p>这里使用<strong>梯度下降法（Gradient Descent）</strong>来处理优化问题.</p>
+<p>先假设一个比较简单的损失函数$L(w)$，只包含一个参数$w$.不一定是前面定义的损失函数，可以是任何<strong>可微分</strong>的函数.</p>
+<p>现在的问题就是：<br>$$<br>w^* = \arg \min_w L(w)<br>$$<br>梯度下降法的做法：</p>
+<ol>
+<li><strong>随机</strong>选取一个初始的点$w^0$.</li>
+<li>计算$\frac{dL}{dw}|_{w=w^0}$，如果算出来斜率是负值，就应该增大$w$；如果计算出来斜率是正值，就应该减小$w$.</li>
+<li>参数更新，$w^0 - \eta \frac{dL}{dw}|_{w=w^0} \rightarrow w^1$，其中$\eta$称为学习率.</li>
+<li>依次迭代2和3步.</li>
+</ol>
+<blockquote>
+<p>推广到两个参数，步骤是一样的：</p>
+<ol>
+<li><strong>随机</strong>选取一个初始的点$w^0,b^0$.</li>
+<li>计算$\frac{\partial L}{\partial w}|<em>{w=w^0,b=b^0},\frac{\partial L}{\partial b}|</em>{w=w^0,b=b^0}$.</li>
+<li>参数更新，$w^0 - \eta \frac{\partial L}{\partial w}|<em>{w=w^0,b=b^0} \rightarrow w^1 , b^0 - \eta \frac{\partial L}{\partial b}|</em>{w=w^0,b=b^0} \rightarrow b^1$.</li>
+<li>依次迭代2和3步.</li>
+</ol>
+<p><strong>注意</strong>：线性回归中，损失函数是<strong>凸函数</strong>，所以局部最优解就是全局最优解.</p>
+</blockquote>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>求误差之和来评估模型的性能：<br>$$<br>e_{avg} = \sum_{n=1}^{10} e^n<br>$$<br>原来数据的$e_{avg} = 31.9$，又捕捉了10只新的宝可梦，计算$e_{avg} = 35.0$.</p>
+<h2 id="选择其他模型"><a href="#选择其他模型" class="headerlink" title="选择其他模型"></a>选择其他模型</h2><p>选择一个更加复杂的模型，带有<strong>二次项</strong>：<br>$$<br>y = b + w_1 \cdot x_{cp} + w_2 \cdot (x_{cp})^2<br>$$<br>甚至带有<strong>三次项</strong>：<br>$$<br>y = b + w_1 \cdot x_{cp} + w_2 \cdot (x_{cp})^2 + w_3 \cdot (x_{cp})^3<br>$$<br><strong>四次项</strong>：<br>$$<br>y = b + w_1 \cdot x_{cp} + w_2 \cdot (x_{cp})^2 + w_3 \cdot (x_{cp})^3 + w_4 \cdot (x_{cp})^4<br>$$<br>出现了<strong>过拟合</strong>.</p>
+<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><blockquote>
+<p>前面的损失函数只考虑了预测值和实际值之间的<strong>误差</strong>，正则化就是给损失函数加上额外的项.<br>$$<br>y = b + \sum w_i x_i<br>$$</p>
+<p>$$<br>L = \sum_{n} (\hat{y}^n - (b + w \cdot x_{cp}^n))^2 + \lambda \sum (w_i)^2<br>$$</p>
+</blockquote>
+<p>我们期待找到的函数中$w_i$参数越小越好，因为$w_i$小的函数是非常<strong>平滑</strong>的，也就是函数对于输入变化不敏感，输入的变化对输出的变化影响很小，这样可以降低噪声干扰.</p>
+<p>$\lambda$的数值越大，我们对$w_i$<strong>参数本身</strong>越关注，而减少了对误差的关注.我们可以手动调整$\lambda$的数值.</p>
+<p>要注意的是，因为偏置$b$并不会影响函数的平滑程度，而只是让函数上下移动，所以正则化不用考虑偏置项.</p>
+]]></content>
+      <categories>
+        <category>AI</category>
+      </categories>
+      <tags>
+        <tag>李宏毅</tag>
+        <tag>机器学习</tag>
+        <tag>AI</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「Markdown_03」使用Flowchart绘图</title>
     <url>/2020/02/28/markdown-03/</url>
     <content><![CDATA[<h1 id="安装Flowchart插件"><a href="#安装Flowchart插件" class="headerlink" title="安装Flowchart插件"></a>安装Flowchart插件</h1><ol>
@@ -381,6 +468,7 @@ c2(no)->op2->e</textarea><textarea id="flowchart-0-options" style="display: none
 </ol>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (theme.mermaid.enable) &#123; %&gt;</span><br><span class="line">  &lt;script src=<span class="string">'https://unpkg.com/mermaid@&lt;%= theme.mermaid.version %&gt;/dist/mermaid.min.js'</span>&gt;&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">  &lt;script&gt;</span></span><br><span class="line"><span class="regexp">    if (window.mermaid) &#123;</span></span><br><span class="line"><span class="regexp">      mermaid.initialize(&#123;theme: 'forest'&#125;);</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>script&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
 
+<p>其中<code>forest</code>是绘图的主题，不同主题的色彩组合不同，共4种主题可以选择，分别是<code>default</code>、<code>dark</code>、<code>forest</code>、<code>neutral</code>。</p>
 <ol start="4">
 <li>到这里，我们就可以通过<strong>添加代码块</strong>的方式来绘制图形了，这里要注意，添加的代码块要注明代码类型为<code>mermaid</code>。</li>
 </ol>

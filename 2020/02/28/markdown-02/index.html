@@ -213,6 +213,7 @@
 </ol>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (theme.mermaid.enable) &#123; %&gt;</span><br><span class="line">  &lt;script src=<span class="string">'https://unpkg.com/mermaid@&lt;%= theme.mermaid.version %&gt;/dist/mermaid.min.js'</span>&gt;&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">  &lt;script&gt;</span></span><br><span class="line"><span class="regexp">    if (window.mermaid) &#123;</span></span><br><span class="line"><span class="regexp">      mermaid.initialize(&#123;theme: 'forest'&#125;);</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>script&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
 
+<p>其中<code>forest</code>是绘图的主题，不同主题的色彩组合不同，共4种主题可以选择，分别是<code>default</code>、<code>dark</code>、<code>forest</code>、<code>neutral</code>。</p>
 <ol start="4">
 <li>到这里，我们就可以通过<strong>添加代码块</strong>的方式来绘制图形了，这里要注意，添加的代码块要注明代码类型为<code>mermaid</code>。</li>
 </ol>
@@ -529,6 +530,14 @@ Class08 <--> C2: Cool label</pre>
     </div>
 </footer>
 
+
+    <script src='https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'neutral'});
+      }
+    </script>
+  
     </div>
 </body>
 </html>
