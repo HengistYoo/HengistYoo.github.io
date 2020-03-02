@@ -18,7 +18,7 @@
     <meta name="keywords" content="豆豆,学习,小笔记,睡觉自由">
 
 
-<title>「AI_01」回归：案例学习 | 豆豆的小笔记</title>
+<title>「AI_02」梯度下降 | 豆豆的小笔记</title>
 
 
 
@@ -218,14 +218,14 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">「AI_01」回归：案例学习</h1>
+            <h1 class="post-title">「AI_02」梯度下降</h1>
             
                 <div class="post-meta">
                     
 
                     
                         <span class="post-time">
-                        时间： <a href="#">三月 2, 2020&nbsp;&nbsp;13:06:57</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        时间： <a href="#">三月 3, 2020&nbsp;&nbsp;0:40:18</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </span>
                     
                     
@@ -241,80 +241,58 @@
         </header>
 
         <div class="post-content">
-            <h1 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h1><ul>
-<li>股票预测系统：利用以往的数据来判断未来的股票.</li>
-<li>无人驾驶：利用一些传感器数据来判断方向盘角度.</li>
-<li>推荐系统：输入使用者A和商品B，输出使用者购买可能性.</li>
-</ul>
-<h1 id="应用示例"><a href="#应用示例" class="headerlink" title="应用示例"></a>应用示例</h1><p>评估宝可梦的<strong>CP值（战斗力）</strong>，从而判断是否进化宝可梦.</p>
-<p>输入是某只宝可梦：</p>
+            <h1 id="复习：梯度下降法"><a href="#复习：梯度下降法" class="headerlink" title="复习：梯度下降法"></a>复习：梯度下降法</h1><p>在之前的第三步中，要解一个优化问题：<br>$$<br>\theta^* = \arg \min_\theta L(\theta)<br>$$</p>
 <ul>
-<li>$x$代表宝可梦.</li>
-<li>$x_{cp}$代表宝可梦的<strong>CP值</strong>.</li>
-<li>$x_s$代表宝可梦的<strong>物种</strong>.</li>
-<li>$x_{hp}$代表宝可梦的<strong>生命值</strong>.</li>
-<li>$x_w$代表宝可梦的<strong>重量</strong>.</li>
-<li>$x_h$代表宝可梦的<strong>高度</strong>.</li>
-<li>$y$代表<strong>进化后的CP值</strong>.</li>
+<li>$L$：损失函数.</li>
+<li>$\theta$：参数.</li>
 </ul>
-<h2 id="第一步：模型"><a href="#第一步：模型" class="headerlink" title="第一步：模型"></a>第一步：模型</h2><p>例如选择：<br>$$<br>y = b + w \cdot x_{cp}<br>$$</p>
-<blockquote>
-<p>线性模型：<br>$$<br>y = b + \sum w_i x_i<br>$$<br>其中：</p>
-<ul>
-<li>$x_i$是输入的不同属性，称为<strong>特征</strong>.</li>
-<li>$w_i$是每个特征对应的<strong>权重</strong>.</li>
-<li>$b$称为<strong>偏置</strong>.</li>
-</ul>
-</blockquote>
-<h2 id="第二步：模型性能"><a href="#第二步：模型性能" class="headerlink" title="第二步：模型性能"></a>第二步：模型性能</h2><p>接下来要收集<strong>训练数据</strong>才能找到模型的函数.</p>
-<p>我们收集的是模型的输入和输出，因为是一个回归的模型，所以<strong>输出是一个数值</strong>.</p>
-<p>举例来说（用<strong>上标</strong>表示<strong>完整的对象的编号</strong>，用<strong>下标</strong>表示对象的<strong>成分</strong>）：</p>
-<ul>
-<li>杰尼龟$x^1$进化到卡咪龟$\hat{y}^1=979$.</li>
-<li>伊布$x^2$进化到雷精灵$\hat{y}^2=1420$.</li>
-</ul>
-<p>由此，收集了10只宝可梦的数据：<br>$$<br>(x^1,\hat{y}^1), (x^2,\hat{y}^2), \dots ,(x^{10},\hat{y}^{10})<br>$$<br>可以绘制出来一张$x_{cp}-\hat{y}$的散点图。</p>
-<blockquote>
-<p>接下来要判断不同函数的好坏，这里需要定义一个新的函数<strong>损失函数$L$</strong>，这是一个函数的函数：</p>
-<ul>
-<li>输入：一个函数.</li>
-<li>输出：这个函数有<strong>多不好</strong>.</li>
-</ul>
-<p>$$<br>L(f) = L(w,b)<br>$$</p>
-<p>因为$f$是由$w, b$决定的，所以我们可以说损失函数是用来衡量一组参数的好坏.</p>
-<p>实际上可以选择不同的损失函数的形式，这里就将数据带入到$y = b + w \cdot x_{cp}$中，然后计算差的平方和，即：<br>$$<br>L(f) = L(w,b) = \sum_{n=1}^{10} (\hat{y}^n - (b + w \cdot x_{cp}^n))^2<br>$$</p>
-</blockquote>
-<h2 id="第三步：最优方程"><a href="#第三步：最优方程" class="headerlink" title="第三步：最优方程"></a>第三步：最优方程</h2><blockquote>
-<p>根据损失函数来挑选最好的方程<br>$$<br>f^* = \arg \min_f L(f)<br>$$<br>或<br>$$<br>\begin{align}<br>w^* , b^* &amp; = \arg \min_{w,b} L(w, b) \\<br>&amp; = \arg \min_{w,b} \sum_{n=1}^{10} (\hat{y}^n - (b + w \cdot x_{cp}^n))^2<br>\end{align}<br>$$<br>从中选择能够使得损失函数最好的$w,b$参数.</p>
-</blockquote>
-<h2 id="第三步：梯度下降法"><a href="#第三步：梯度下降法" class="headerlink" title="第三步：梯度下降法"></a>第三步：梯度下降法</h2><p>这里使用<strong>梯度下降法（Gradient Descent）</strong>来处理优化问题.</p>
-<p>先假设一个比较简单的损失函数$L(w)$，只包含一个参数$w$.不一定是前面定义的损失函数，可以是任何<strong>可微分</strong>的函数.</p>
-<p>现在的问题就是：<br>$$<br>w^* = \arg \min_w L(w)<br>$$<br>梯度下降法的做法：</p>
+<p>假设$\theta$包含两个变量${\theta_1, \theta_2}$.</p>
 <ol>
-<li><strong>随机</strong>选取一个初始的点$w^0$.</li>
-<li>计算$\frac{dL}{dw}|_{w=w^0}$，如果算出来斜率是负值，就应该增大$w$；如果计算出来斜率是正值，就应该减小$w$.</li>
-<li>参数更新，$w^0 - \eta \frac{dL}{dw}|_{w=w^0} \rightarrow w^1$，其中$\eta$称为学习率.</li>
-<li>依次迭代2和3步.</li>
+<li>随机地选择一个起始的$\theta$</li>
+</ol>
+<p>$$<br>\theta^0 = \left[<br>\begin{matrix}<br>\theta_1^0 \\<br>\theta_2^0<br>\end{matrix}<br>\right]<br>$$</p>
+<ol start="2">
+<li>计算下一个点的坐标</li>
+</ol>
+<p>$$<br>\left[<br>\begin{matrix}<br>\theta_1^1 \\<br>\theta_2^1<br>\end{matrix}<br>\right] = \left[<br>\begin{matrix}<br>\theta_1^0 \\<br>\theta_2^0<br>\end{matrix}<br>\right] - \eta \left[<br>\begin{matrix}<br>\frac{\partial L(\theta_1^0)}{\partial \theta_1} \\<br>\frac{\partial L(\theta_2^0)}{\partial \theta_2}<br>\end{matrix}<br>\right]<br>$$</p>
+<ol start="3">
+<li>反复进行.</li>
 </ol>
 <blockquote>
-<p>推广到两个参数，步骤是一样的：</p>
-<ol>
-<li><strong>随机</strong>选取一个初始的点$w^0,b^0$.</li>
-<li>计算$ \frac{\partial L}{\partial w}|_{w=w^0,b=b^0},\frac{\partial L}{\partial b}|_{w=w^0,b=b^0}$.</li>
-<li>参数更新$ w^0 - \eta \frac{\partial L}{\partial w}|_{w=w^0,b=b^0} \rightarrow w^1,b^0 - \eta \frac{\partial L}{\partial b}|_{w=w^0,b=b^0} \rightarrow b^1$.</li>
-<li>依次迭代2和3步.</li>
-</ol>
-<p><strong>注意</strong>：线性回归中，损失函数是<strong>凸函数</strong>，所以局部最优解就是全局最优解.</p>
+<p>梯度表示为<br>$$<br>\nabla L(\theta) = \left[<br>\begin{matrix}<br>\frac{\partial C(\theta_1)}{\partial \theta_1} \\<br>\frac{\partial C(\theta_2)}{\partial \theta_2}<br>\end{matrix}<br>\right]<br>$$</p>
 </blockquote>
-<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>求误差之和来评估模型的性能：<br>$$<br>e_{avg} = \sum_{n=1}^{10} e^n<br>$$<br>原来数据的$e_{avg} = 31.9$，又捕捉了10只新的宝可梦，计算$e_{avg} = 35.0$.</p>
-<h2 id="选择其他模型"><a href="#选择其他模型" class="headerlink" title="选择其他模型"></a>选择其他模型</h2><p>选择一个更加复杂的模型，带有<strong>二次项</strong>：<br>$$<br>y = b + w_1 \cdot x_{cp} + w_2 \cdot (x_{cp})^2<br>$$<br>甚至带有<strong>三次项</strong>：<br>$$<br>y = b + w_1 \cdot x_{cp} + w_2 \cdot (x_{cp})^2 + w_3 \cdot (x_{cp})^3<br>$$<br><strong>四次项</strong>：<br>$$<br>y = b + w_1 \cdot x_{cp} + w_2 \cdot (x_{cp})^2 + w_3 \cdot (x_{cp})^3 + w_4 \cdot (x_{cp})^4<br>$$<br>出现了<strong>过拟合</strong>.</p>
-<h2 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h2><blockquote>
-<p>前面的损失函数只考虑了预测值和实际值之间的<strong>误差</strong>，正则化就是给损失函数加上额外的项.<br>$$<br>y = b + \sum w_i x_i<br>$$</p>
-<p>$$<br>L = \sum_{n} (\hat{y}^n - (b + w \cdot x_{cp}^n))^2 + \lambda \sum (w_i)^2<br>$$</p>
-</blockquote>
-<p>我们期待找到的函数中$w_i$参数越小越好，因为$w_i$小的函数是非常<strong>平滑</strong>的，也就是函数对于输入变化不敏感，输入的变化对输出的变化影响很小，这样可以降低噪声干扰.</p>
-<p>$\lambda$的数值越大，我们对$w_i$<strong>参数本身</strong>越关注，而减少了对误差的关注.我们可以手动调整$\lambda$的数值.</p>
-<p>要注意的是，因为偏置$b$并不会影响函数的平滑程度，而只是让函数上下移动，所以正则化不用考虑偏置项.</p>
+<p>那么点的更新过程就可以写成：</p>
+<p>$$<br>\theta^1 = \theta^0 - \eta \nabla L(\theta^0)<br>$$</p>
+<p>$$<br>\theta^2 = \theta^1 - \eta \nabla L(\theta^1)<br>$$</p>
+<h1 id="提示一：小心调整步长"><a href="#提示一：小心调整步长" class="headerlink" title="提示一：小心调整步长"></a>提示一：小心调整步长</h1><p>如果步长过短，可能会需要很长时间才能收敛；如果步长过长，可能无法收敛到最优点.</p>
+<p>对于多维的目标函数，可能无法可视化迭代的过程，但是可以可视化<strong>不同的步长下Loss值和迭代次数的关系图</strong>.</p>
+<h2 id="自适应调整步长"><a href="#自适应调整步长" class="headerlink" title="自适应调整步长"></a>自适应调整步长</h2><ul>
+<li>一种常用的做法：<strong>每隔几次迭代就减小步长</strong>.<ul>
+<li>最开始的时候，我们距离最优点很远，所以我们可以使用很大的步长.</li>
+<li>经过若干次迭代后，我们距离最优点很近了，所以我们要减小步长.</li>
+<li>例如：$\frac{1}{t}$衰减，$\eta^t = \frac{\eta}{\sqrt{t+1}}$，其中$t$代表迭代次数.</li>
+</ul>
+</li>
+<li>步长的选择是不可能一劳永逸的.<ul>
+<li>最好的做法是，<strong>每个参数选择不同的步长</strong>. </li>
+</ul>
+</li>
+</ul>
+<h2 id="Adagrad"><a href="#Adagrad" class="headerlink" title="Adagrad"></a>Adagrad</h2><p>将每一个参数的步长都除以它之前导数的均方根.</p>
+<p>批次梯度下降（Vanilla Gradient descent）的做法：<br>$$<br>w^t - \eta^t g^t \rightarrow w^{t+1}<br>$$<br>改进版算法（Adagrad）的做法：<br>$$<br>w^t - \frac{\eta^t}{\sigma^t} g^t \rightarrow w^{t+1}<br>$$</p>
+<ul>
+<li>$w$：是其中一个参数，因为改进的算法要针对每个参数选择不同的步长.</li>
+<li>$\sigma^t$：参数$w$的前一个导数的均方根.</li>
+<li>$\eta^t = \frac{\eta}{\sqrt{t+1}}$.</li>
+<li>$g^t = \frac{\partial C(\theta^t)}{\partial w}$.</li>
+</ul>
+<p>这样以来，每次参数的更新都是依赖于每个参数的不同梯度.</p>
+<p>例子：<br>$$<br>w^1 \leftarrow w^0 - \frac{\eta^0}{\sigma^0} g^0 , \sigma^0 = \sqrt{(g^0)^2}<br>$$</p>
+<p>$$<br>w^2 \leftarrow w^1 - \frac{\eta^1}{\sigma^1} g^1 , \sigma^1 = \sqrt{\frac{1}{2}[(g^0)^2+(g^1)^2]}<br>$$</p>
+<p>$$<br>w^3 \leftarrow w^2 - \frac{\eta^2}{\sigma^2} g^2 , \sigma^2 = \sqrt{\frac{1}{3}[(g^0)^2+(g^1)^2+(g^2)^2]}<br>$$</p>
+<p>$$<br>\dots \dots<br>$$</p>
+<p>$$<br>w^{t+1} \leftarrow w^t - \frac{\eta^t}{\sigma^t} g^t , \sigma^t = \sqrt{\frac{1}{t+1} \sum_{i=0}^{t}(g^i)^2}<br>$$</p>
+<p>将$\eta^t$和$\sigma^t$的表达式代入到式中，上下同时消去$\frac{1}{\sqrt{t+1}}$得：<br>$$<br>w^{t+1} \leftarrow w^t - \frac{\eta}{\sqrt{\sum_{i=0}^{t}(g^i)^2}} g^t<br>$$</p>
 
         </div>
 
@@ -342,10 +320,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2020/03/03/ai-lhyML-02/">「AI_02」梯度下降</a>
             
-            
-            <a class="next" rel="next" href="/2020/02/28/markdown-03/">「Markdown_03」使用Flowchart绘图</a>
+            <a class="next" rel="next" href="/2020/03/02/ai-lhyML-01/">「AI_01」回归：案例学习</a>
             
         </section>
 

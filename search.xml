@@ -1,6 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>「AI_02」梯度下降</title>
+    <url>/2020/03/03/ai-lhyML-02/</url>
+    <content><![CDATA[<h1 id="复习：梯度下降法"><a href="#复习：梯度下降法" class="headerlink" title="复习：梯度下降法"></a>复习：梯度下降法</h1><p>在之前的第三步中，要解一个优化问题：<br>$$<br>\theta^* = \arg \min_\theta L(\theta)<br>$$</p>
+<ul>
+<li>$L$：损失函数.</li>
+<li>$\theta$：参数.</li>
+</ul>
+<p>假设$\theta$包含两个变量${\theta_1, \theta_2}$.</p>
+<ol>
+<li>随机地选择一个起始的$\theta$</li>
+</ol>
+<p>$$<br>\theta^0 = \left[<br>\begin{matrix}<br>\theta_1^0 \\<br>\theta_2^0<br>\end{matrix}<br>\right]<br>$$</p>
+<ol start="2">
+<li>计算下一个点的坐标</li>
+</ol>
+<p>$$<br>\left[<br>\begin{matrix}<br>\theta_1^1 \\<br>\theta_2^1<br>\end{matrix}<br>\right] = \left[<br>\begin{matrix}<br>\theta_1^0 \\<br>\theta_2^0<br>\end{matrix}<br>\right] - \eta \left[<br>\begin{matrix}<br>\frac{\partial L(\theta_1^0)}{\partial \theta_1} \\<br>\frac{\partial L(\theta_2^0)}{\partial \theta_2}<br>\end{matrix}<br>\right]<br>$$</p>
+<ol start="3">
+<li>反复进行.</li>
+</ol>
+<blockquote>
+<p>梯度表示为<br>$$<br>\nabla L(\theta) = \left[<br>\begin{matrix}<br>\frac{\partial C(\theta_1)}{\partial \theta_1} \\<br>\frac{\partial C(\theta_2)}{\partial \theta_2}<br>\end{matrix}<br>\right]<br>$$</p>
+</blockquote>
+<p>那么点的更新过程就可以写成：</p>
+<p>$$<br>\theta^1 = \theta^0 - \eta \nabla L(\theta^0)<br>$$</p>
+<p>$$<br>\theta^2 = \theta^1 - \eta \nabla L(\theta^1)<br>$$</p>
+<h1 id="提示一：小心调整步长"><a href="#提示一：小心调整步长" class="headerlink" title="提示一：小心调整步长"></a>提示一：小心调整步长</h1><p>如果步长过短，可能会需要很长时间才能收敛；如果步长过长，可能无法收敛到最优点.</p>
+<p>对于多维的目标函数，可能无法可视化迭代的过程，但是可以可视化<strong>不同的步长下Loss值和迭代次数的关系图</strong>.</p>
+<h2 id="自适应调整步长"><a href="#自适应调整步长" class="headerlink" title="自适应调整步长"></a>自适应调整步长</h2><ul>
+<li>一种常用的做法：<strong>每隔几次迭代就减小步长</strong>.<ul>
+<li>最开始的时候，我们距离最优点很远，所以我们可以使用很大的步长.</li>
+<li>经过若干次迭代后，我们距离最优点很近了，所以我们要减小步长.</li>
+<li>例如：$\frac{1}{t}$衰减，$\eta^t = \frac{\eta}{\sqrt{t+1}}$，其中$t$代表迭代次数.</li>
+</ul>
+</li>
+<li>步长的选择是不可能一劳永逸的.<ul>
+<li>最好的做法是，<strong>每个参数选择不同的步长</strong>. </li>
+</ul>
+</li>
+</ul>
+<h2 id="Adagrad"><a href="#Adagrad" class="headerlink" title="Adagrad"></a>Adagrad</h2><p>将每一个参数的步长都除以它之前导数的均方根.</p>
+<p>批次梯度下降（Vanilla Gradient descent）的做法：<br>$$<br>w^t - \eta^t g^t \rightarrow w^{t+1}<br>$$<br>改进版算法（Adagrad）的做法：<br>$$<br>w^t - \frac{\eta^t}{\sigma^t} g^t \rightarrow w^{t+1}<br>$$</p>
+<ul>
+<li>$w$：是其中一个参数，因为改进的算法要针对每个参数选择不同的步长.</li>
+<li>$\sigma^t$：参数$w$的前一个导数的均方根.</li>
+<li>$\eta^t = \frac{\eta}{\sqrt{t+1}}$.</li>
+<li>$g^t = \frac{\partial C(\theta^t)}{\partial w}$.</li>
+</ul>
+<p>这样以来，每次参数的更新都是依赖于每个参数的不同梯度.</p>
+<p>例子：<br>$$<br>w^1 \leftarrow w^0 - \frac{\eta^0}{\sigma^0} g^0 , \sigma^0 = \sqrt{(g^0)^2}<br>$$</p>
+<p>$$<br>w^2 \leftarrow w^1 - \frac{\eta^1}{\sigma^1} g^1 , \sigma^1 = \sqrt{\frac{1}{2}[(g^0)^2+(g^1)^2]}<br>$$</p>
+<p>$$<br>w^3 \leftarrow w^2 - \frac{\eta^2}{\sigma^2} g^2 , \sigma^2 = \sqrt{\frac{1}{3}[(g^0)^2+(g^1)^2+(g^2)^2]}<br>$$</p>
+<p>$$<br>\dots \dots<br>$$</p>
+<p>$$<br>w^{t+1} \leftarrow w^t - \frac{\eta^t}{\sigma^t} g^t , \sigma^t = \sqrt{\frac{1}{t+1} \sum_{i=0}^{t}(g^i)^2}<br>$$</p>
+<p>将$\eta^t$和$\sigma^t$的表达式代入到式中，上下同时消去$\frac{1}{\sqrt{t+1}}$得：<br>$$<br>w^{t+1} \leftarrow w^t - \frac{\eta}{\sqrt{\sum_{i=0}^{t}(g^i)^2}} g^t<br>$$</p>
+]]></content>
+      <categories>
+        <category>AI</category>
+      </categories>
+      <tags>
+        <tag>李宏毅</tag>
+        <tag>机器学习</tag>
+        <tag>AI</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「AI_01」回归：案例学习</title>
     <url>/2020/03/02/ai-lhyML-01/</url>
     <content><![CDATA[<h1 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h1><ul>
