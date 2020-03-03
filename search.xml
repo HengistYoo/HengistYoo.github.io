@@ -55,6 +55,98 @@
 <p>$$<br>\dots \dots<br>$$</p>
 <p>$$<br>w^{t+1} \leftarrow w^t - \frac{\eta^t}{\sigma^t} g^t , \sigma^t = \sqrt{\frac{1}{t+1} \sum_{i=0}^{t}(g^i)^2}<br>$$</p>
 <p>将$\eta^t$和$\sigma^t$的表达式代入到式中，上下同时消去$\frac{1}{\sqrt{t+1}}$得：<br>$$<br>w^{t+1} \leftarrow w^t - \frac{\eta}{\sqrt{\sum_{i=0}^{t}(g^i)^2}} g^t<br>$$</p>
+<h2 id="矛盾"><a href="#矛盾" class="headerlink" title="矛盾"></a>矛盾</h2><p>在上面得到的式子里，梯度$g^t$越大，他每次迭代的变化越大，但是分母$\sqrt{\sum_{i=0}^{t}(g^i)^2}$就会越小.</p>
+<h3 id="直观的解释"><a href="#直观的解释" class="headerlink" title="直观的解释"></a>直观的解释</h3><p>例如：</p>
+<table>
+<thead>
+<tr>
+<th align="center">$g^0$</th>
+<th align="center">$g^1$</th>
+<th align="center">$g^2$</th>
+<th align="center">$g^3$</th>
+<th align="center">$g^4$</th>
+<th align="center">$\dots$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0.001</td>
+<td align="center">0.001</td>
+<td align="center">0.003</td>
+<td align="center">0.002</td>
+<td align="center">0.1</td>
+<td align="center">$\dots$</td>
+</tr>
+</tbody></table>
+<p>$g^4$的反差特别大.</p>
+<table>
+<thead>
+<tr>
+<th align="center">$g^0$</th>
+<th align="center">$g^1$</th>
+<th align="center">$g^2$</th>
+<th align="center">$g^3$</th>
+<th align="center">$g^4$</th>
+<th align="center">$\dots$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">10.8</td>
+<td align="center">20.9</td>
+<td align="center">31.7</td>
+<td align="center">12.1</td>
+<td align="center">0.1</td>
+<td align="center">$\dots$</td>
+</tr>
+</tbody></table>
+<p>$g^4$的反差特别小.</p>
+<p>分母$\sqrt{\sum_{i=0}^{t}(g^i)^2}$就表示了造成反差的效果.</p>
+<h1 id="提示二：随机梯度下降法"><a href="#提示二：随机梯度下降法" class="headerlink" title="提示二：随机梯度下降法"></a>提示二：随机梯度下降法</h1><p>原来的梯度下降方法：</p>
+<ul>
+<li>损失函数的计算：</li>
+</ul>
+<p>$$<br>L = \sum_{n} \left(\hat{y}^n - \left(b + \sum w_i x_i^n\right)\right)^2<br>$$</p>
+<ul>
+<li>点的更新：</li>
+</ul>
+<p>$$<br>\theta^i = \theta^{i-1} - \eta \nabla L(\theta^{i-1})<br>$$</p>
+<p>而随机梯度下降法（Stochastic Gradient Descent）：</p>
+<ul>
+<li>选择一个样本$x^n$.</li>
+<li>只计算选择的样本$x^n$的损失函数：</li>
+</ul>
+<p>$$<br>L^n = \left( \hat{y}^n - \left( b + \sum w_i x_i^n \right) \right)^2<br>$$</p>
+<ul>
+<li>根据样本$x^n$的损失函数来更新点：</li>
+</ul>
+<p>$$<br>\theta^i = \theta^{i-1} - \eta \nabla L^n(\theta^{i-1})<br>$$</p>
+<p>这样，在原来的梯度下降法看了全部样本之前，就可以看一个样本走一步，最后得到解.</p>
+<h1 id="提示三：特征放缩"><a href="#提示三：特征放缩" class="headerlink" title="提示三：特征放缩"></a>提示三：特征放缩</h1><p>例如，函数<br>$$<br>y = b + w_1 x_1 + w_2 x_2<br>$$<br>当中，$x_1$和$x_2$的尺度不同，那么就要进行特征放缩，让特征拥有相同的尺度.</p>
+<hr>
+<p>一种常见的特征放缩的方法：</p>
+<p>假设有$R$个<strong>样本</strong>，每个样本中都有一组<strong>特征</strong>：</p>
+<ul>
+<li>$x^1={x_1^1, x_2^1, x_3^1, \dots , x_n^1}$.</li>
+<li>$x^2={x_1^2, x_2^2, x_3^2, \dots , x_n^2}$.</li>
+<li>$x^3={x_1^3, x_2^3, x_3^3, \dots , x_n^3}$.</li>
+<li>$\dots \dots$</li>
+<li>$x^r={x_1^r, x_2^r, x_3^r, \dots , x_n^r}$.</li>
+<li>$\dots \dots $</li>
+<li>$x^R={x_1^R, x_2^R, x_3^R, \dots , x_n^R}$.</li>
+</ul>
+<p>对于每一个维度$i$的特征，计算：</p>
+<ol>
+<li>均值：</li>
+</ol>
+<p>$$<br>m_i = \frac{1}{R} \sum^{R}_{j=1} x_i^j<br>$$</p>
+<ol start="2">
+<li>标准差：</li>
+</ol>
+<p>$$<br>\sigma_i = \frac{1}{R}\sum_{j=1}^{R} \left( x_i^j - m_i \right)^2<br>$$</p>
+<ol start="3">
+<li>计算尺度变换后的特征：</li>
+</ol>
+<p>$$<br>x_i^r = \dfrac{x_i^r - m_i}{\sigma_i}<br>$$</p>
+<p>这样得到的新的特征<strong>均值为0，方差为1</strong>.</p>
 ]]></content>
       <categories>
         <category>AI</category>
