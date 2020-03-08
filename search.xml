@@ -1,6 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>「Go_01」搭建Go语言开发环境</title>
+    <url>/2020/03/09/go-01/</url>
+    <content><![CDATA[<h1 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h1><p><a href="https://golang.org/dl/" target="_blank" rel="noopener">Go官网下载地址</a></p>
+<p><a href="https://golang.google.cn/dl/" target="_blank" rel="noopener">Go官方镜像站（推荐）</a></p>
+<h1 id="安装测试"><a href="#安装测试" class="headerlink" title="安装测试"></a>安装测试</h1><ol>
+<li>安装Go语言环境；</li>
+<li>在<code>cmd</code>窗口中输入<code>go version</code>来测试安装是否成功，输出<code>go version go1.14 windows/amd64</code>代表安装成功。</li>
+</ol>
+<h1 id="配置GOPATH"><a href="#配置GOPATH" class="headerlink" title="配置GOPATH"></a>配置GOPATH</h1><ul>
+<li><code>GOPATH</code>是一个环境变量，用来表明Go语言项目保存的路径。</li>
+<li><code>GOPATH</code>路径最好只设置一个，所有的项目代码都放到<code>GOPATH</code>的<code>src</code>路径下。</li>
+<li>创建一个文件夹<code>.\Go</code>，创建一个环境变量，变量名为<code>GOPATH</code>，变量内容为这个文件夹的路径。</li>
+<li>在 Go 1.8 版本之前，<code>GOPATH</code>环境变量默认是空的。从 Go 1.8 版本开始，Go 开发包在安装完成后会为 <code>GOPATH</code>设置一个默认目录，参见下表，可以把自动创建的<code>GOPATH</code>变量删掉。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">平台</th>
+<th align="center">GOPATH默认值</th>
+<th align="center">举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Windows</td>
+<td align="center">%USERPROFILE%/go</td>
+<td align="center">C:\Users\dodo\go</td>
+</tr>
+<tr>
+<td align="center">Unix</td>
+<td align="center">$HOME/go</td>
+<td align="center">/home/dodo/go</td>
+</tr>
+</tbody></table>
+<ul>
+<li>在<code>GOPATH</code>目录下新建三个文件夹：<ul>
+<li><code>bin</code>：用来存放编译后生成的可执行文件；</li>
+<li><code>pkg</code>：用来存放编译后生成的归档文件；</li>
+<li><code>src</code>：用来存放源码文件。</li>
+</ul>
+</li>
+<li>把上面创建的<code>.\Go\bin</code>添加到系统的<code>PATH</code>环境变量中。</li>
+<li>设置完环境变量后，<strong>重新打开一个</strong><code>cmd</code>，输入<code>go env</code>，可以查看Go语言的环境变量。其中<code>GOPATH</code>是要写代码的位置，<code>GOROOT</code>是安装Go语言环境的位置。</li>
+</ul>
+<h1 id="Go项目的目录结构"><a href="#Go项目的目录结构" class="headerlink" title="Go项目的目录结构"></a>Go项目的目录结构</h1><p>在进行Go语言开发的时候，我们的代码总是会保存在<code>$GOPATH/src</code>目录下。在工程经过<code>go build</code>、<code>go install</code>或<code>go get</code>等指令后，会将下载的第三方包源代码文件放在<code>$GOPATH/src</code>目录下， 产生的二进制可执行文件放在 <code>$GOPATH/bin</code>目录下，生成的中间缓存文件会被保存在 <code>$GOPATH/pkg</code> 下。</p>
+<p>如果我们使用版本管理工具（Version Control System，VCS。常用如Git）来管理我们的项目代码时，我们只需要添加<code>$GOPATH/src</code>目录的源代码即可。<code>bin</code> 和 <code>pkg</code> 目录的内容无需版本控制。</p>
+<h2 id="适合个人开发者"><a href="#适合个人开发者" class="headerlink" title="适合个人开发者"></a>适合个人开发者</h2><p>我们知道源代码都是存放在<code>GOPATH</code>的<code>src</code>目录下，那我们可以按照下图来组织我们的代码。</p>
+<pre class="mermaid">graph LR
+A(GOPATH) --存放编译后的二进制文件--- B(bin)
+A --存放编译后的库文件--- C(pkg)
+A --存放源码文件--- D(src)
+D --- E(项目1)
+subgraph 项目1
+E --- H(模块A)
+E --- I(模块B)
+E --- J(模块C)
+end
+D --- F(项目2)
+subgraph 项目2
+F --- K(模块A)
+F --- L(模块B)
+F --- M(模块C)
+end
+D --- G(项目n)
+subgraph 项目3
+G --- N(模块N)
+end</pre>
+
+<h2 id="目前流行的项目结构"><a href="#目前流行的项目结构" class="headerlink" title="目前流行的项目结构"></a>目前流行的项目结构</h2><p>Go语言中也是通过包来组织代码文件，我们可以引用别人的包也可以发布自己的包，但是为了防止不同包的项目名冲突，我们通常使用<code>顶级域名</code>来作为包名的前缀，这样就不担心项目名冲突的问题了。</p>
+<p>因为不是每个个人开发者都拥有自己的顶级域名，所以目前流行的方式是使用个人的github用户名来区分不同的包。</p>
+<pre class="mermaid">graph LR
+A(GOPATH) --- B(bin)
+A --- C(pkg)
+A --- D(src)
+D --- E(golang.org)
+D --- F(github.com)
+D --- G(gopkg.in)
+F --- H(Dodo)
+H --- I(项目1)
+I --- L(模块A)
+I --- M(模块A)
+H --- J(项目B)
+J --- N(模块A)
+J --- O(模块B)
+J --- P(模块C)
+H --- K(项目n)
+K --- Q(模块N)
+subgraph 网站域名
+E
+F
+G
+end
+subgraph 作者/机构
+H
+end
+subgraph 项目名
+I
+J
+K
+end</pre>
+
+<h2 id="适合企业开发场景"><a href="#适合企业开发场景" class="headerlink" title="适合企业开发场景"></a>适合企业开发场景</h2><pre class="mermaid">graph LR
+A(GOPATH) --- B(bin)
+A --- C(pkg)
+A --- D(src)
+D --- E(golang.org)
+D --公司代码仓库域名--- F(code.xx.com)
+D --- G(github.com)
+F --- H(后端组)
+H --- I(项目1)
+I --- L(模块A)
+I --- M(模块A)
+H --- J(项目B)
+J --- N(模块A)
+J --- O(模块B)
+J --- P(模块C)
+H --- K(项目n)
+K --- Q(模块N)
+F --- R(前端组)
+F --- S(基础架构组)
+subgraph 公司内部组织架构
+H
+R
+S
+end</pre>
+
+]]></content>
+      <categories>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>编程语言</tag>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「AI_02」梯度下降</title>
     <url>/2020/03/03/ai-lhyML-02/</url>
     <content><![CDATA[<h1 id="复习：梯度下降法"><a href="#复习：梯度下降法" class="headerlink" title="复习：梯度下降法"></a>复习：梯度下降法</h1><p>在之前的第三步中，要解一个优化问题：<br>$$<br>\theta^* = \arg \min_\theta L(\theta)<br>$$</p>
