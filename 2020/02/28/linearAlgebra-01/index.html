@@ -290,13 +290,9 @@
 </li>
 <li><p><strong>同型矩阵</strong>：两个行数与列数相等的矩阵.</p>
 </li>
-<li><p><strong>相等矩阵</strong>：设 </p>
+<li><p><strong>相等矩阵</strong>：设 $ \pmb{A}=(a_{ij})_{mxn} $与$ \pmb{B}= (a_{ij})_{mxn} $是同型矩阵且对应元相等，则称$ \pmb{A} $与$ \pmb{B} $相等，记作$ \pmb{A} = \pmb{B} $.即</p>
 </li>
 </ul>
-<p>$$ \pmb{A}=(a_{ij})_{mxn} $$</p>
-<p>与</p>
-<p>$$ \pmb{B}= (a_{ij})_{mxn} $$</p>
-<p>是同型矩阵且对应元相等，则称$ \pmb{A} $与$ \pmb{B} $相等，记作$ \pmb{A} = \pmb{B} $.即</p>
 <p>$$<br>\pmb{A} = \pmb{B} \Leftrightarrow a_{ij} = b_{ij},i=1,2,…,m;j=1,2,…,n.<br>$$</p>
 <ul>
 <li><strong>系数矩阵</strong>：在实际问题中，常常会遇到一些变量要用另外一些变量线性表示.设一组变量$ y_1 , y_2 ,…, y_m $用另一组变量$ x_1 , x_2 ,…, x_n $表示为<br>$$<br>\left \lbrace<br>\begin{aligned}<br>y_1 &amp; = a_{11}x_1+a_{12}x_2+…+a_{1n}x_n \\<br>y_2 &amp; = a_{21}x_1+a_{22}x_2+…+a_{2n}x_n \\<br>&amp; \dots \dots \dots \dots \\<br>y_m &amp; = a_{m1}x_1+a_{m2}x_2+…+a_{mn}x_n<br>\end{aligned}<br>\right.<br>$$</li>
@@ -343,7 +339,7 @@
 <h2 id="矩阵的乘法"><a href="#矩阵的乘法" class="headerlink" title="矩阵的乘法"></a>矩阵的乘法</h2><blockquote>
 <p><strong>定义</strong>：</p>
 <p>设$ \pmb{A}=(a_{ij}) $是一个$ m\times s $矩阵，$ \pmb{B}=(b_{ij}) $是一个$ s\times n $矩阵，规定矩阵 $ \pmb{A} $与矩阵$ \pmb{B} $的乘积是$ m\times n $矩阵$ \pmb{C}=(c_{ij}) $，记为$ \pmb{C}=\pmb{AB} $,其中</p>
-<p>$$<br>c_{ij} = a_{i1}b_{1j}+a_{i2}b_{2j}+…+a_{is}b_{sj}=\sum_{k=1}^{s}. (i=1,2,…,m;j=1,2,…,n)<br>$$</p>
+<p>$$<br>c_{ij} = a_{i1}b_{1j}+a_{i2}b_{2j}+…+a_{is}b_{sj}=\sum_{k=1}^{s} a_{ik}b_{kj}.(i=1,2,…,m;j=1,2,…,n)<br>$$</p>
 </blockquote>
 <hr>
 <blockquote>
@@ -362,7 +358,7 @@
 <li>$ (\pmb{AB})\pmb{C}=\pmb{A}(\pmb{BC}) $.</li>
 <li>$ \pmb{A}(\pmb{B}+\pmb{C})=\pmb{AB}+\pmb{AC} , (\pmb{B}+\pmb{C})\pmb{A}=\pmb{BA}+\pmb{CA} $.</li>
 <li>$ \lambda(\pmb{AB})=(\lambda\pmb{A})\pmb{B}=\pmb{A}(\lambda\pmb{B}) $，其中$ \lambda $是数.</li>
-<li>$  E_mA_{m\times n} = A_{m\times n}E_n = A_{m\times n} $.</li>
+<li>$  \pmb{E}_m\pmb{A}_{m\times n} = \pmb{A}_{m\times n}\pmb{E}_n = \pmb{A}_{m\times n} $.</li>
 </ul>
 </blockquote>
 <h2 id="方阵的幂与多项式"><a href="#方阵的幂与多项式" class="headerlink" title="方阵的幂与多项式"></a>方阵的幂与多项式</h2><p>设$ \pmb{A} $为$ n $阶方阵，$ k $为正整数，$ k $个$ \pmb{A} $的连乘积称为$ \pmb{A} $的$ k $次幂，记作$ \pmb{A}^k $.即</p>
@@ -411,7 +407,7 @@
                 <a class="prev" rel="prev" href="/2020/02/28/markdown-03/">「Markdown_03」使用Flowchart绘图</a>
             
             
-            <a class="next" rel="next" href="/2020/02/28/python1-10/">「Python_10」第一部分：还没想好题目</a>
+            <a class="next" rel="next" href="/2020/02/28/markdown-02/">「Markdown_02」使用Mermaid绘图</a>
             
         </section>
 

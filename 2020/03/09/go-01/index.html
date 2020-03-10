@@ -246,85 +246,11 @@
 <h1 id="Go项目的目录结构"><a href="#Go项目的目录结构" class="headerlink" title="Go项目的目录结构"></a>Go项目的目录结构</h1><p>在进行Go语言开发的时候，我们的代码总是会保存在<code>$GOPATH/src</code>目录下。在工程经过<code>go build</code>、<code>go install</code>或<code>go get</code>等指令后，会将下载的第三方包源代码文件放在<code>$GOPATH/src</code>目录下， 产生的二进制可执行文件放在 <code>$GOPATH/bin</code>目录下，生成的中间缓存文件会被保存在 <code>$GOPATH/pkg</code> 下。</p>
 <p>如果我们使用版本管理工具（Version Control System，VCS。常用如Git）来管理我们的项目代码时，我们只需要添加<code>$GOPATH/src</code>目录的源代码即可。<code>bin</code> 和 <code>pkg</code> 目录的内容无需版本控制。</p>
 <h2 id="适合个人开发者"><a href="#适合个人开发者" class="headerlink" title="适合个人开发者"></a>适合个人开发者</h2><p>我们知道源代码都是存放在<code>GOPATH</code>的<code>src</code>目录下，那我们可以按照下图来组织我们的代码。</p>
-<pre class="mermaid">graph LR
-A(GOPATH) --存放编译后的二进制文件--- B(bin)
-A --存放编译后的库文件--- C(pkg)
-A --存放源码文件--- D(src)
-D --- E(项目1)
-subgraph 项目1
-E --- H(模块A)
-E --- I(模块B)
-E --- J(模块C)
-end
-D --- F(项目2)
-subgraph 项目2
-F --- K(模块A)
-F --- L(模块B)
-F --- M(模块C)
-end
-D --- G(项目n)
-subgraph 项目3
-G --- N(模块N)
-end</pre>
-
+<p><img src="001.png" alt="001" title="001"></p>
 <h2 id="目前流行的项目结构"><a href="#目前流行的项目结构" class="headerlink" title="目前流行的项目结构"></a>目前流行的项目结构</h2><p>Go语言中也是通过包来组织代码文件，我们可以引用别人的包也可以发布自己的包，但是为了防止不同包的项目名冲突，我们通常使用<code>顶级域名</code>来作为包名的前缀，这样就不担心项目名冲突的问题了。</p>
 <p>因为不是每个个人开发者都拥有自己的顶级域名，所以目前流行的方式是使用个人的github用户名来区分不同的包。</p>
-<pre class="mermaid">graph LR
-A(GOPATH) --- B(bin)
-A --- C(pkg)
-A --- D(src)
-D --- E(golang.org)
-D --- F(github.com)
-D --- G(gopkg.in)
-F --- H(Dodo)
-H --- I(项目1)
-I --- L(模块A)
-I --- M(模块A)
-H --- J(项目B)
-J --- N(模块A)
-J --- O(模块B)
-J --- P(模块C)
-H --- K(项目n)
-K --- Q(模块N)
-subgraph 网站域名
-E
-F
-G
-end
-subgraph 作者/机构
-H
-end
-subgraph 项目名
-I
-J
-K
-end</pre>
-
-<h2 id="适合企业开发场景"><a href="#适合企业开发场景" class="headerlink" title="适合企业开发场景"></a>适合企业开发场景</h2><pre class="mermaid">graph LR
-A(GOPATH) --- B(bin)
-A --- C(pkg)
-A --- D(src)
-D --- E(golang.org)
-D --公司代码仓库域名--- F(code.xx.com)
-D --- G(github.com)
-F --- H(后端组)
-H --- I(项目1)
-I --- L(模块A)
-I --- M(模块A)
-H --- J(项目B)
-J --- N(模块A)
-J --- O(模块B)
-J --- P(模块C)
-H --- K(项目n)
-K --- Q(模块N)
-F --- R(前端组)
-F --- S(基础架构组)
-subgraph 公司内部组织架构
-H
-R
-S
-end</pre>
-
+<p><img src="002.png" alt="002" title="002"></p>
+<h2 id="适合企业开发场景"><a href="#适合企业开发场景" class="headerlink" title="适合企业开发场景"></a>适合企业开发场景</h2><p><img src="003.png" alt="003" title="003"></p>
 
         </div>
 
