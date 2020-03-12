@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="豆豆">
+
+
+    <meta name="subtitle" content="愿望是实现睡觉自由">
+
+
+    <meta name="description" content="你来啦，这里是豆豆的小笔记！">
+
+
+    <meta name="keywords" content="豆豆,学习,小笔记,睡觉自由">
+
+
+<title>「AI_06」梯度下降法 | 豆豆的小笔记</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">豆豆的小笔记</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">豆豆的小笔记</a><a id="mobile-toggle-theme">·&nbsp;纯白</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; 菜单</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">展开所有</a>
+        <a onclick="go_top()">回到顶部</a>
+        <a onclick="go_bottom()">到达底部</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "收起所有"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "展开所有"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">「AI_06」梯度下降法</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        时间： <a href="#">三月 13, 2017&nbsp;&nbsp;22:13:18</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类：
+                            
+                                <a href="/categories/AI/">AI</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="复习-梯度下降法"><a href="#复习-梯度下降法" class="headerlink" title="复习 | 梯度下降法"></a>复习 | 梯度下降法</h1><p>在回归问题的第三步中，需要解决下面的最优化问题：</p>
+<p>$$<br>\theta^* = \arg \min_\theta L(\theta)<br>$$</p>
+<ul>
+<li>$L$ ：lossfunction（损失函数）</li>
+<li>$\theta$ ：parameters（参数）</li>
+</ul>
+<p>这里的 $\theta$ 指代一堆参数，比如上篇说到的 $w$ 和 $b$ 。</p>
+<p>我们要找一组参数 $\theta$ ，让损失函数越小越好，这个问题可以用梯度下降法解决：</p>
+<p>假设 $\theta$ 有里面有两个参数 $\theta_1, \theta_2$，随机选取初始值</p>
+<ol>
+<li>随机地选择一个起始的$\theta$</li>
+</ol>
+<p>$$<br>\theta^0 = \left[<br>\begin{matrix}<br>\theta_1^0 \\<br>\theta_2^0<br>\end{matrix}<br>\right]<br>$$</p>
+<ol start="2">
+<li>计算下一个点的坐标</li>
+</ol>
+<p>$$<br>\left[<br>\begin{matrix}<br>\theta_1^1 \\<br>\theta_2^1<br>\end{matrix}<br>\right] = \left[<br>\begin{matrix}<br>\theta_1^0 \\<br>\theta_2^0<br>\end{matrix}<br>\right] - \eta \left[<br>\begin{matrix}<br>\frac{\partial L(\theta_1^0)}{\partial \theta_1} \\<br>\frac{\partial L(\theta_2^0)}{\partial \theta_2}<br>\end{matrix}<br>\right]<br>$$</p>
+<ol start="3">
+<li>反复进行.</li>
+</ol>
+<blockquote>
+<p>梯度表示为<br>$$<br>\nabla L(\theta) = \left[<br>\begin{matrix}<br>\frac{\partial C(\theta_1)}{\partial \theta_1} \\<br>\frac{\partial C(\theta_2)}{\partial \theta_2}<br>\end{matrix}<br>\right]<br>$$</p>
+</blockquote>
+<p>那么点的更新过程就可以写成：</p>
+<p>$$<br>\theta^1 = \theta^0 - \eta \nabla L(\theta^0)<br>$$</p>
+<p>$$<br>\theta^2 = \theta^1 - \eta \nabla L(\theta^1)<br>$$</p>
+<p>下图举例将梯度下降法的计算过程进行可视化。</p>
+<p><img src="chapter6-2.png" alt=""></p>
+<h1 id="提示一-小心调整步长"><a href="#提示一-小心调整步长" class="headerlink" title="提示一 | 小心调整步长"></a>提示一 | 小心调整步长</h1><p>举例：</p>
+<p><img src="chapter6-3.png" alt=""></p>
+<p>上图左边黑色为损失函数的曲线，假设从左边最高点开始，如果学习率调整的刚刚好，比如红色的线，就能顺利找到最低点。</p>
+<ul>
+<li>如果学习率调整的太小，比如蓝色的线，就会走的太慢，虽然这种情况给足够多的时间也可以找到最低点，实际情况可能会等不及出结果。</li>
+<li>如果学习率调整的有点大，比如绿色的线，就会在上面震荡，走不下去，永远无法到达最低点。</li>
+<li>还有可能非常大，比如黄色的线，直接就飞出去了，更新参数的时候只会发现损失函数越更新越大。</li>
+</ul>
+<p>虽然这样的可视化可以很直观观察，但可视化也只是能在参数是一维或者二维的时候进行，更高维的情况已经无法可视化了。</p>
+<p>解决方法就是上图右边的方案，将<strong>参数改变对损失函数的影响进行可视化</strong>。</p>
+<ul>
+<li>比如学习率太小（蓝色的线），损失函数下降的非常慢；</li>
+<li>学习率太大（绿色的线），损失函数下降很快，但马上就卡住不下降了；</li>
+<li>学习率特别大（黄色的线），损失函数就飞出去了；</li>
+<li>红色的就是差不多刚好，可以得到一个好的结果。</li>
+</ul>
+<h2 id="自适应学习率"><a href="#自适应学习率" class="headerlink" title="自适应学习率"></a>自适应学习率</h2><ul>
+<li>一种常用的做法：<strong>每隔几次迭代就减小步长</strong>.<ul>
+<li>最开始的时候，我们距离最优点很远，所以我们可以使用很大的步长.</li>
+<li>经过若干次迭代后，我们距离最优点很近了，所以我们要减小步长.</li>
+<li>例如：$\frac{1}{t}$衰减，$\eta^t = \frac{\eta}{\sqrt{t+1}}$，其中$t$代表迭代次数.</li>
+</ul>
+</li>
+<li>步长的选择是不可能一劳永逸的.<ul>
+<li>最好的做法是，<strong>每个参数选择不同的步长</strong>. </li>
+</ul>
+</li>
+</ul>
+<h2 id="Adagrad-算法"><a href="#Adagrad-算法" class="headerlink" title="Adagrad 算法"></a>Adagrad 算法</h2><h3 id="Adagrad-是什么"><a href="#Adagrad-是什么" class="headerlink" title="Adagrad 是什么"></a>Adagrad 是什么</h3><p>将每一个参数的步长都除以它之前导数的均方根。</p>
+<p><strong>普通的</strong>批次梯度下降（Vanilla Gradient descent）的做法：<br>$$<br>w^{t+1} \leftarrow  w^t -η^tg^t<br>$$</p>
+<p>$$<br>\eta^t =\frac{\eta^t}{\sqrt{t+1}}<br>$$</p>
+<hr>
+<p>Adagrad可以做的更好：<br>$$<br>w^{t+1} \leftarrow  w^t -\frac{η^t}{\sigma^t}g^t<br>$$</p>
+<p>$$<br>g^t =\frac{\partial L(\theta^t)}{\partial w}<br>$$</p>
+<ul>
+<li>$w$：是其中一个参数，因为改进的算法要针对每个参数选择不同的步长.</li>
+<li>$\sigma^t$：参数$w$的前一个导数的均方根.</li>
+<li>$\eta^t = \frac{\eta}{\sqrt{t+1}}$.</li>
+<li>$g^t = \frac{\partial C(\theta^t)}{\partial w}$.</li>
+</ul>
+<p>这样以来，每次参数的更新都是依赖于每个参数的不同梯度。</p>
+<h3 id="Adagrad举例"><a href="#Adagrad举例" class="headerlink" title="Adagrad举例"></a>Adagrad举例</h3><p>下面是一个参数的更新过程</p>
+<p>$$<br>w^1 \leftarrow w^0 - \frac{\eta^0}{\sigma^0} g^0 , \sigma^0 = \sqrt{(g^0)^2}<br>$$</p>
+<p>$$<br>w^2 \leftarrow w^1 - \frac{\eta^1}{\sigma^1} g^1 , \sigma^1 = \sqrt{\frac{1}{2}[(g^0)^2+(g^1)^2]}<br>$$</p>
+<p>$$<br>w^3 \leftarrow w^2 - \frac{\eta^2}{\sigma^2} g^2 , \sigma^2 = \sqrt{\frac{1}{3}[(g^0)^2+(g^1)^2+(g^2)^2]}<br>$$</p>
+<p>$$<br>\dots \dots<br>$$</p>
+<p>$$<br>w^{t+1} \leftarrow w^t - \frac{\eta^t}{\sigma^t} g^t , \sigma^t = \sqrt{\frac{1}{t+1} \sum_{i=0}^{t}(g^i)^2}<br>$$</p>
+<p>将$\eta^t$和$\sigma^t$的表达式代入到式中，上下同时消去$\frac{1}{\sqrt{t+1}}$得：</p>
+<p>$$<br>w^{t+1} \leftarrow w^t - \frac{\eta}{\sqrt{\sum_{i=0}^{t}(g^i)^2}} g^t<br>$$</p>
+<h2 id="Adagrad存在的矛盾"><a href="#Adagrad存在的矛盾" class="headerlink" title="Adagrad存在的矛盾"></a>Adagrad存在的矛盾</h2><p><img src="chapter6-6.png" alt=""></p>
+<p>在 Adagrad中，当梯度越大的时候，步伐应该越大，但下面分母又导致当梯度越大的时候，步伐会越小。</p>
+<p>下图是一个直观的解释：</p>
+<p><img src="chapter6-7.png" alt=""></p>
+<p>$g^4$的反差特别小。</p>
+<p>分母$\sqrt{\sum_{i=0}^{t}(g^i)^2}$就表示了造成反差的效果。</p>
+<hr>
+<p>下面给一个正式的解释：</p>
+<p><img src="chapter6-8.png" alt=""></p>
+<p>比如初始点在 $x_0$，最低点为 $−\frac{b}{2a}$，最佳的步伐就是 $x0$ 到最低点之间的距离 $\left | x_0+\frac{b}{2a} \right |$，也可以写成 $\left | \frac{2ax_0+b}{2a} \right |$。而刚好 $|2ax_0+b|$ 就是方程绝对值在 $x_0$ 这一点的微分。</p>
+<p>这样可以认为如果算出来的微分越大，则距离最低点越远。而且最好的步伐和微分的大小成正比。所以如果踏出去的步伐和微分成正比，它可能是比较好的。</p>
+<p>结论：梯度越大，就跟最低点的距离越远。</p>
+<p>这个结论在多个参数的时候就不一定成立了。</p>
+<h2 id="多参数下结论不一定成立"><a href="#多参数下结论不一定成立" class="headerlink" title="多参数下结论不一定成立"></a>多参数下结论不一定成立</h2><p>对比不同的参数</p>
+<p><img src="chapter6-9.png" alt=""></p>
+<p>上图左边是两个参数的损失函数，颜色代表损失函数的值。如果只考虑参数 $w_1$，就像图中蓝色的线，得到右边上图结果；如果只考虑参数 $w_2$，就像图中绿色的线，得到右边下图的结果。确实对于 $a$ 和 $b$，结论1-1是成立的，同理 $c$ 和 $b$ 也成立。但是如果对比$a$ 和 $c$，就不成立了，$c$ 比 $a$ 大，但 $c$ 距离最低点是比较近的。</p>
+<p>所以上面的结论是在没有考虑跨参数对比的情况下，才能成立的。所以还不完善。</p>
+<p>之前说到的最佳距离 $\left | \frac{2ax_0+b}{2a} \right |$，还有个分母 $2a$ 。对function进行二次微分刚好可以得到：</p>
+<p>$$<br>\frac{\partial ^2y}{\partial x^2} = 2a<br>$$</p>
+<p>所以最好的步伐应该是：</p>
+<p>$$<br>\frac{一次微分}{二次微分}<br>$$</p>
+<p>即不止和一次微分成正比，还和二次微分成反比。最好的step应该考虑到二次微分：</p>
+<p><img src="chapter6-10.png" alt=""></p>
+<h2 id="Adagrad进一步的解释"><a href="#Adagrad进一步的解释" class="headerlink" title="Adagrad进一步的解释"></a>Adagrad进一步的解释</h2><p>再回到之前的 Adagrad</p>
+<p><img src="chapter6-11.png" alt=""></p>
+<p>对于 $\sqrt{\sum_{i=0}^t(g^i)^2}$ 就是希望再尽可能不增加过多运算的情况下模拟二次微分。（如果计算二次微分，在实际情况中可能会增加很多的时间消耗）</p>
+<h1 id="提示二-随机梯度下降法"><a href="#提示二-随机梯度下降法" class="headerlink" title="提示二 | 随机梯度下降法"></a>提示二 | 随机梯度下降法</h1><p>原来的梯度下降方法：</p>
+<ul>
+<li>损失函数的计算：</li>
+</ul>
+<p>$$<br>L = \sum_{n} \left(\hat{y}^n - \left(b + \sum w_i x_i^n\right)\right)^2<br>$$</p>
+<ul>
+<li>点的更新：</li>
+</ul>
+<p>$$<br>\theta^i = \theta^{i-1} - \eta \nabla L(\theta^{i-1})<br>$$</p>
+<p>而随机梯度下降法（Stochastic Gradient Descent）：</p>
+<ul>
+<li>选择一个样本$x^n$.</li>
+<li>只计算选择的样本$x^n$的损失函数：</li>
+</ul>
+<p>$$<br>L^n = \left( \hat{y}^n - \left( b + \sum w_i x_i^n \right) \right)^2<br>$$</p>
+<ul>
+<li>根据样本$x^n$的损失函数来更新点：</li>
+</ul>
+<p>$$<br>\theta^i = \theta^{i-1} - \eta \nabla L^n(\theta^{i-1})<br>$$</p>
+<p>这样，在原来的梯度下降法看了全部样本之前，就可以看一个样本走一步，最后得到解.</p>
+<p>对比：</p>
+<p><img src="chapter6-12.png" alt=""></p>
+<p>常规梯度下降法走一步要处理到所有二十个例子，但随机算法此时已经走了二十步（每处理一个例子就更新）</p>
+<h1 id="提示三-特征缩放"><a href="#提示三-特征缩放" class="headerlink" title="提示三 | 特征缩放"></a>提示三 | 特征缩放</h1><p>比如有个函数：</p>
+<p>$$<br>y = b + w_1 x_1 + w_2 x_2<br>$$</p>
+<p>当中，$x_1$和$x_2$的尺度不同，那么就要进行特征放缩，让特征拥有相同的尺度。</p>
+<p><img src="chapter6-13.png" alt=""></p>
+<h2 id="为什么要这样做"><a href="#为什么要这样做" class="headerlink" title="为什么要这样做"></a>为什么要这样做</h2><p><img src="chapter6-14.png" alt=""></p>
+<p>上图左边是 $x_1$ 的scale比 $x_2$ 要小很多，所以当 $w_1$ 和 $w_2$ 做同样的变化时，$w_1$ 对 $y$ 的变化影响是比较小的，$x_2$ 对 $y$ 的变化影响是比较大的。</p>
+<p>坐标系中是两个参数的error surface（现在考虑左边蓝色），因为 $w_1$ 对 $y$ 的变化影响比较小，所以 $w_1$ 对损失函数的影响比较小，$w_1$ 对损失函数有比较小的微分，所以 $w_1$ 方向上是比较平滑的。同理 $x_2$ 对 $y$ 的影响比较大，所以 $x_2$ 对损失函数的影响比较大，所以在 $x_2$ 方向有比较尖的峡谷。</p>
+<p>上图右边是两个参数scaling比较接近，右边的绿色图就比较接近圆形。</p>
+<p>对于左边的情况，上面讲过这种狭长的情形不过不用Adagrad的话是比较难处理的，两个方向上需要不同的学习率，同一组学习率会搞不定它。而右边情形更新参数就会变得比较容易。左边的梯度下降并不是向着最低点方向走的，而是顺着等高线切线法线方向走的。但绿色就可以向着圆心（最低点）走，这样做参数更新也是比较有效率。</p>
+<h2 id="怎么做缩放"><a href="#怎么做缩放" class="headerlink" title="怎么做缩放"></a>怎么做缩放</h2><p>方法非常多，这里举例一种常见的做法：</p>
+<p><img src="chapter6-15.png" alt=""></p>
+<p>对于每一个维度$i$的特征，计算：</p>
+<ol>
+<li>均值：</li>
+</ol>
+<p>$$<br>m_i = \frac{1}{R} \sum^{R}_{j=1} x_i^j<br>$$</p>
+<ol start="2">
+<li>标准差：</li>
+</ol>
+<p>$$<br>\sigma_i = \frac{1}{R}\sum_{j=1}^{R} \left( x_i^j - m_i \right)^2<br>$$</p>
+<ol start="3">
+<li>计算尺度变换后的特征：</li>
+</ol>
+<p>$$<br>x_i^r = \dfrac{x_i^r - m_i}{\sigma_i}<br>$$</p>
+<p>这样得到的新的特征<strong>均值为0，方差为1</strong>.</p>
+<h1 id="梯度下降的理论基础"><a href="#梯度下降的理论基础" class="headerlink" title="梯度下降的理论基础"></a>梯度下降的理论基础</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>当用梯度下降解决问题：</p>
+<p>$$<br>\theta^∗= \underset{ \theta }{\operatorname{arg\ max}}  L(\theta)<br>$$</p>
+<p>每次更新参数 $\theta$，都得到一个新的 $\theta$，它都使得损失函数更小。即：</p>
+<p>$$<br>L(\theta^0) &gt;L(\theta^1)&gt;L(\theta^2)&gt;\dots<br>$$</p>
+<p>上述结论正确吗？</p>
+<p>结论是不正确的。</p>
+<h2 id="数学理论"><a href="#数学理论" class="headerlink" title="数学理论"></a>数学理论</h2><p><img src="chapter6-16.png" alt=""></p>
+<p>比如在 $\theta^0$ 处，可以在一个小范围的圆圈内找到损失函数细小的 $\theta^1$，不断的这样去寻找。</p>
+<hr>
+<p>接下来就是如果在小圆圈内快速的找到最小值？</p>
+<h2 id="泰勒展开式"><a href="#泰勒展开式" class="headerlink" title="泰勒展开式"></a>泰勒展开式</h2><p>先介绍一下泰勒展开式</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>若 $h(x)$ 在 $x=x_0$ 点的某个领域内有无限阶导数（即无限可微分，infinitely differentiable），那么在此领域内有：</p>
+<p>$$<br>\begin{aligned}<br>h(x)  &amp;= \sum_{k=0}^{\infty }\frac{h^k(x_0)}{k!}(x-x_0)^k  \<br>&amp; =h(x_0)+{h}’(x_0)(x−x_0)+\frac{h’’(x_0)}{2!}(x−x_0)^2+⋯<br>\end{aligned}<br>$$</p>
+<p>当 $x$ 很接近 $x_0$ 时，有 $h(x)≈h(x_0)+{h}’(x_0)(x−x_0)$，式就是函数 $h(x)$ 在 $x=x_0$ 点附近关于 $x$ 的幂函数展开式，也叫泰勒展开式。</p>
+<p>举例：</p>
+<p><img src="chapter6-17.png" alt=""></p>
+<p>图中3条蓝色线是把前3项作图，橙色线是 $sin(x)$。</p>
+<h3 id="多变量泰勒展开式"><a href="#多变量泰勒展开式" class="headerlink" title="多变量泰勒展开式"></a>多变量泰勒展开式</h3><p>下面是两个变量的泰勒展开式</p>
+<p><img src="chapter6-18.png" alt=""></p>
+<h2 id="利用泰勒展开式简化"><a href="#利用泰勒展开式简化" class="headerlink" title="利用泰勒展开式简化"></a>利用泰勒展开式简化</h2><p>回到之前如何快速在圆圈内找到最小值。基于泰勒展开式，在 $(a,b)$ 点的红色圆圈范围内，可以将损失函数用泰勒展开式进行简化：</p>
+<p><img src="chapter6-19.png" alt=""></p>
+<p>将问题进而简化为下图：</p>
+<p><img src="chapter6-20.png" alt=""></p>
+<p>不考虑s的话，可以看出剩下的部分就是两个向量$(\triangle \theta_1,\triangle \theta_2)$ 和  $(u,v)$ 的内积，那怎样让它最小，就是和向量 $(u,v)$ 方向相反的向量</p>
+<p><img src="chapter6-21.png" alt=""></p>
+<p>然后将u和v带入。</p>
+<p><img src="chapter6-22.png" alt=""></p>
+<p>$$<br>L(\theta)\approx s+u(\theta_1 - a)+v(\theta_2 - b)<br>$$</p>
+<p>发现最后的式子就是梯度下降的式子。但这里用这种方法找到这个式子有个前提，泰勒展开式给的损失函数的估算值是要足够精确的，而这需要红色的圈圈足够小（也就是学习率足够小）来保证。所以理论上每次更新参数都想要损失函数减小的话，即保证式1-2 成立的话，就需要学习率足够足够小才可以。</p>
+<p>所以实际中，当更新参数的时候，如果学习率没有设好，是有可能式1-2是不成立的，所以导致做梯度下降的时候，损失函数没有越来越小。</p>
+<p>式1-2只考虑了泰勒展开式的一次项，如果考虑到二次项（比如牛顿法），在实际中不是特别好，会涉及到二次微分等，多很多的运算，性价比不好。</p>
+<h1 id="梯度下降的限制"><a href="#梯度下降的限制" class="headerlink" title="梯度下降的限制"></a>梯度下降的限制</h1><p><img src="chapter6-23.png" alt=""></p>
+<ul>
+<li>容易陷入局部极值；</li>
+<li>还有可能卡在不是极值，但微分值是0的地方；</li>
+<li>还有可能实际中只是当微分值小于某一个数值就停下来了，但这里只是比较平缓，并不是极值点。</li>
+</ul>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><h2 id="AOE中的示例"><a href="#AOE中的示例" class="headerlink" title="AOE中的示例"></a>AOE中的示例</h2><ul>
+<li>利用<strong>帝国时代</strong>的方式模拟<strong>梯度下降</strong>；</li>
+<li>在地图上大多数位置我们是未知的，只有我们单位走过的地方是可知；</li>
+<li>地图上的海拔可以看作损失函数<strong>loss function</strong>，我们的目的就是寻找海拔的最低点的值；</li>
+<li>随机初始一个位置，朝向较低的方向移动，周而复始，直到<strong>local minimal</strong>(在不开天眼的情况下，你始终不会知晓所在位置是否为global minimal)。</li>
+</ul>
+<h2 id="Minecraft中的示例"><a href="#Minecraft中的示例" class="headerlink" title="Minecraft中的示例"></a>Minecraft中的示例</h2><ul>
+<li>利用<strong>梯度下降法</strong>更新参数，损失函数loss function可能会不降反升(利用<strong>Mincraft</strong>解释该情况)；</li>
+<li>人物的前方是较低方向，右方也是较低方向，利用梯度下降法，往右前方移动一步，然后反复用梯度下降法，往右前方移动一步，周而复始；</li>
+<li>尽管前方和右方是下降的方向，但往右前方移动，将会失败(因为实际右前方是比较高的地方)。</li>
+</ul>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>标签：</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%9D%8E%E5%AE%8F%E6%AF%85/"># 李宏毅</a>&nbsp;&nbsp;
+                    
+                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 机器学习</a>&nbsp;&nbsp;
+                    
+                        <a href="/tags/AI/"># AI</a>&nbsp;&nbsp;
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/03/09/go-01/">「Go_01」搭建Go语言开发环境</a>
+            
+            
+            <a class="next" rel="next" href="/2017/03/13/ai-lhyML-05/">「AI_05」误差的来源</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 豆豆 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+
+    <script src='https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'neutral'});
+      }
+    </script>
+  
+    </div>
+</body>
+</html>
