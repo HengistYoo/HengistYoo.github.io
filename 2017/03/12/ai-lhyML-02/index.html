@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="豆豆">
+
+
+    <meta name="subtitle" content="愿望是实现睡觉自由">
+
+
+    <meta name="description" content="你来啦，这里是豆豆的小笔记！">
+
+
+    <meta name="keywords" content="豆豆,学习,小笔记,睡觉自由">
+
+
+<title>「AI_02」为什么要学习机器学习 | 豆豆的小笔记</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">豆豆的小笔记</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">豆豆的小笔记</a><a id="mobile-toggle-theme">·&nbsp;纯白</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; 菜单</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">归档</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">「AI_02」为什么要学习机器学习</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        时间： <a href="#">三月 12, 2017&nbsp;&nbsp;18:28:59</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    分类：
+                            
+                                <a href="/categories/AI/">AI</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><img src="chapter2-1.png" alt=""></p>
+<p>各位同学，大家好，今天我要来讲，为什么我们需要学习机器学习。听说AI要来取代人类的工作了，大家都很担心。</p>
+<blockquote>
+<p>为什么我们需要学习机器学习？</p>
+<p>AI即将取代部分的工作？</p>
+<p>新工作：AI训练师</p>
+</blockquote>
+<p>但大家不用担心会出现一个新的工作，叫做AI训练师，机器不是自己会学吗？为什么需要AI训练师。</p>
+<p><img src="chapter2-3.png" alt=""></p>
+<p>这个问题就好像是问说，为什么需要宝可梦训练师？我记得宝可梦训练师都只在旁边嘴炮，都不自己战斗。但是我们知道，宝可梦训练师，其实很重要，例如说战斗时要选择属性适合的宝可梦。不然就会像这样（动画场景：你这个白痴，难道你不知道飞行系的遇到岩石系的神奇宝贝是没作用的吗？）。</p>
+<blockquote>
+<p><strong>AI训练师</strong></p>
+<ul>
+<li><p>AI训练师要挑选合适的model、loss function</p>
+<ul>
+<li>不同model、loss function适合解决不同的问题</li>
+</ul>
+</li>
+<li><p>不一定能找出best function</p>
+<ul>
+<li>E.g. Deep Learning</li>
+<li>需要有经验的AI训练师</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>同样地AI训练师需要为机器挑选合适的model和loss function。不同的model和loss function适合解决不同的问题。</p>
+<blockquote>
+<p><strong>宝可梦训练师</strong></p>
+<ul>
+<li>宝可梦训练师要挑选适合的宝可梦来战斗<ul>
+<li>宝可梦有不同的属性</li>
+</ul>
+</li>
+<li>召唤出来的宝可梦不一定听话<ul>
+<li>E.g. 小智的喷火龙</li>
+<li>需要有经验的宝可梦训练师</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>另外，我们知道，召唤出来的宝可梦，不一定会听话。例如说（动画场景：真的没有问题吗？小健，你放心，我相信喷火龙一定办得到）。也有些模型的最佳化比较困难，例如深度学习，可能会需要有经验的AI训练师来处理。</p>
+<p><img src="chapter2-6.png" alt=""></p>
+<p>因此，我们知道要训练出厉害的AI，AI训练师功不可没，所以让我们一起朝AI训练师之路迈进。</p>
+
+        </div>
+
+        
+        <section class="post-tags">
+            <div>
+                <span>标签：</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E6%9D%8E%E5%AE%8F%E6%AF%85/"># 李宏毅</a>&nbsp;&nbsp;
+                    
+                        <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 机器学习</a>&nbsp;&nbsp;
+                    
+                        <a href="/tags/AI/"># AI</a>&nbsp;&nbsp;
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">返回</a>
+                <span>· </span>
+                <a href="/">主页</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2017/03/12/ai-lhyML-03/">「AI_03」回归</a>
+            
+            
+            <a class="next" rel="next" href="/2017/03/12/ai-lhyML-01/">「AI_01」机器学习介绍</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 豆豆 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+
+    <script src='https://unpkg.com/mermaid@7.1.2/dist/mermaid.min.js'></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({theme: 'neutral'});
+      }
+    </script>
+  
+    </div>
+</body>
+</html>
